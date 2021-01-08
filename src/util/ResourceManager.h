@@ -6,6 +6,7 @@ enum class TEXTURES
 {
 	DEFAULT,
 	MONKEY,
+	TILES,
 };
 enum class FONTS
 {
@@ -50,6 +51,7 @@ public:
 		{
 		case TEXTURES::DEFAULT:	return addFromFile("res/sprites/chara_01.png", resourceID);
 		case TEXTURES::MONKEY:	return addFromFile("res/sprites/monkeySpriteSheet.png", resourceID);
+		case TEXTURES::TILES:	return addFromFile("res/sprites/tiles.png", resourceID);
 		}
 	}
 
@@ -57,7 +59,7 @@ public:
 	{
 		switch (resourceID)
 		{
-		case FONTS::DEFAULT:	return addFromFile("res/fonts/Roboto-ThinItalic.ttf", resourceID);
+		case FONTS::DEFAULT:	return addFromFile("res/fonts/pokemon_fire_red.ttf", resourceID);
 		}
 	}
 

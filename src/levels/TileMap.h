@@ -24,5 +24,12 @@ public:
 
 	void load(const std::string& fileName, ResourceManager<TEXTURES, sf::Texture>& tm);
 
+	void save(const std::string& fileName);
+
+	Tile& getTile(const unsigned int index);
+
+	const unsigned int getWidth() const;
+	const unsigned int getHeight() const;
+
 	void draw(Window& window);
 };

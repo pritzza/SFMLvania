@@ -23,5 +23,7 @@ public:
 	void draw(const sf::Drawable& drawable);
 	void endDraw();
 
+	sf::RenderWindow& getWindow() { return this->window; }
+
 	bool isOpen() const;
 };

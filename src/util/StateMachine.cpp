@@ -1,9 +1,11 @@
 #include "StateMachine.h"
 
+#include <iostream>
+
 StateMachine::~StateMachine()
 {
 	for (auto it = states.begin(); it != states.end(); ++it)
-		removeState(it->first);
+		delete states.at(it->first);
 }
 
 void StateMachine::processRemoving()
