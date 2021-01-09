@@ -3,10 +3,15 @@
 #include "Tile.h"
 
 #include "../util/Window.h"
+#include "../util/LevelParser.h"
+
+#include "../levels/TileData.h"
 
 #include <fstream>
 #include <istream>
 #include <string>
+
+#include <iostream>
 
 TileMap::~TileMap()
 {
@@ -24,7 +29,10 @@ void TileMap::load(const std::string& fileName, ResourceManager<TEXTURES, sf::Te
 		this->width = std::stoi(line);
 		std::getline(file, line);
 		this->height = std::stoi(line);
+
 		this->tiles = new Tile[width * height];
+
+		LevelParser parser;
 
 		for (int i = 0; i < height; ++i)
 		{
@@ -34,9 +42,21 @@ void TileMap::load(const std::string& fileName, ResourceManager<TEXTURES, sf::Te
 			for (int j = 0; j < width * charsPerTile - 1; j += charsPerTile)  // iterate through each line from left to right
 			{
 				const int index = (i * width) + j / charsPerTile;
-				const unsigned int sprite = tiles[0].parseSpriteID(line.at(j));
-				TILE_SOLID solid = tiles[0].parseSolid(line.at(j + 1));
-				TILE_SPECIAL special = tiles[0].parseSpecial(line.at(j + 2));
+
+				unsigned int sprite {	TILE_SPRITE_ID::MISSING_TILE };
+				TILE_SOLID solid    {	TILE_SOLID::NOT_SOLID		 };
+				TILE_SPECIAL special{	TILE_SPECIAL::NONE			 };
+
+				try		// if something wrong with format of level data going in, replace corrupt data with default tiles
+				{
+					sprite	 = parser.parseSpriteID(  line.at(j)      );
+					solid	 = parser.parseSolid   (  line.at(j + 1)  );
+					special  = parser.parseSpecial (  line.at(j + 2)  );
+				}
+				catch (...)
+				{
+					std::cout << "parsing error";
+				}
 
 				tiles[index].init(tm, width, index, sprite, solid, special);
 			}
@@ -47,18 +67,25 @@ void TileMap::load(const std::string& fileName, ResourceManager<TEXTURES, sf::Te
 void TileMap::save(const std::string& fileName)
 {
 	std::ofstream file;
+
 	file.open(fileName);
+
 	if (file.is_open())
 	{
 		file.clear();
 		file << width << '\n' << height << '\n';
+
+		LevelParser parser;
 
 		for (int i = 0; i < width * height; ++i)
 		{
 			if (i % width == 0 && i)
 				file << '\n';
 
-			file << tiles[i].unparseSpriteID() << tiles[i].unparseSolid() << tiles[i].unparseSpecial();
+			file << 
+				parser.unparseSpriteID(  tiles[i].getSpriteID()  ) << 
+				parser.unparseSolid   (  tiles[i].getSolid()     ) << 
+				parser.unparseSpecial (  tiles[i].getSpecial()   );
 		}
 
 		file.close();
@@ -78,6 +105,12 @@ const unsigned int TileMap::getWidth() const
 const unsigned int TileMap::getHeight() const
 {
 	return this->height;
+}
+
+void TileMap::draw(Window& window, const bool drawRect)
+{
+	for (int i = 0; i < width * height; ++i)
+		tiles[i].draw(window, drawRect);
 }
 
 void TileMap::draw(Window& window)

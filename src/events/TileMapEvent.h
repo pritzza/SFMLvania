@@ -17,6 +17,9 @@ private:
 	const TILE_SOLID solid;
 	const TILE_SPECIAL special;
 
+private:
+	void insertTile();
+
 public:
 	TileMapEvent(TileMap& tm, const unsigned int ti, const unsigned int si, const TILE_SOLID s, const TILE_SPECIAL sp)
 		:
@@ -28,8 +31,5 @@ public:
 	{}
 
 	void virtual eventAction();
-
-private:
-	void insertTile();
 
 };

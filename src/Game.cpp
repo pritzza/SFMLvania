@@ -1,14 +1,15 @@
 #include "Game.h"
 
 #include "util/GameData.h"
-#include "states/GameState.h"
+#include "events/StateEvent.h"
 
-Game::Game(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int size)
+Game::Game(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int size, const unsigned int fps)
 	:
-	data(windowName, width, height, size)
+	data(windowName, width, height, size, fps),
+	FPS(fps)
 {
-	data.stateMachine.addState(STATES::MAIN, new GameState(data));	// add starting state
-	data.stateMachine.changeState(STATES::MAIN);		// change to it
+	data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::ADD, LEVEL::TEST));	// add starting state
+	data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::CHANGE));		// change to it
 }
 
 void Game::gameLoop()
@@ -25,6 +26,8 @@ void Game::gameLoop()
 		data.stateMachine.processStateChange();
 
 		data.window.update();	// checks if window has been closed
+		data.mouse.update();
+		data.keyBoard.update();
 
 		if (data.stateMachine.currentState() != nullptr)
 		{

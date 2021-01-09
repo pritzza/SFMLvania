@@ -6,75 +6,50 @@
 #include "../util/ResourceManager.h"
 
 #include "../events/TileMapEvent.h"
+#include "../events/StateEvent.h"
 
 #include "../gfx/Sprite.h"
 
 #include "../levels/Tile.h"
+#include "../levels/TileData.h"
 
 #include <string>
 
 #include <iostream>
 
-GameState::GameState(GameData& data) 
+GameState::GameState(GameData& data, const std::string& levelFileName) 
 	: 
 	State(data)
 {
 	ResourceManagers& rs = data.resourceManagers;
 
-	s.setTexture(*rs.textureManager.load(rs.textureManager.add(TEXTURES::DEFAULT)));
-	//s.setTextureRect(sf::IntRect(w * cycle, 0, w * (cycle + 1), h));
-	s.setPosition(data.window.WINDOW_WIDTH / 2.f, data.window.WINDOW_HEIGHT / 2.f);
-	s.setScale(1.0f, 1.0f);
-
 	t.setFont(*rs.fontManager.load(rs.fontManager.add(FONTS::DEFAULT)));
-	t.setPosition(0,0);
-	//t.setScale(.5,.5);
+	t.setScale(.2f, .2f);
+	t.setPosition(1, -1);
 
 	rs.textureManager.add(TEXTURES::TILES);
 
-	l.tileMap.load("res/levels/test1.txt", rs.textureManager);
-
-	data.eventHandler.addEvent(new TileMapEvent(l.tileMap, 3, TILE_SPRITE_ID::BRICK, TILE_SOLID::NOT_SOLID, TILE_SPECIAL::NONE));
+	l.tileMap.load(levelFileName, rs.textureManager);
 }
 
 GameState::~GameState()
 {
-	l.tileMap.save("res/levels/test1.txt");
 }
 
 void GameState::handleInput()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (data.keyBoard.isActive(' '))
 	{
-
-	}
-
-	const int& mx = sf::Mouse::getPosition(data.window.getWindow()).x;
-	const int& my = sf::Mouse::getPosition(data.window.getWindow()).y;
-	const int& mapw = l.tileMap.getWidth() * l.tileMap.getTile(0).getLength() * l.tileMap.getTile(0).getScale() * data.window.PIXEL_SIZE * Sprite::SPRITE_SIZE;
-	const int& maph = l.tileMap.getHeight() * l.tileMap.getTile(0).getLength() * l.tileMap.getTile(0).getScale() * data.window.PIXEL_SIZE * Sprite::SPRITE_SIZE;
-
-	if (mx > 0 && mx < mapw &&
-		my > 0 && my < maph &&
-		sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		const int& x = sf::Mouse::getPosition(data.window.getWindow()).x / (l.tileMap.getTile(0).getLength() * l.tileMap.getTile(0).getScale() * data.window.PIXEL_SIZE * Sprite::SPRITE_SIZE);
-		const int& y = sf::Mouse::getPosition(data.window.getWindow()).y / (l.tileMap.getTile(0).getLength() * l.tileMap.getTile(0).getScale() * data.window.PIXEL_SIZE * Sprite::SPRITE_SIZE);
-
-		data.eventHandler.addEvent(new TileMapEvent(l.tileMap, x + (y * l.tileMap.getWidth()), TILE_SPRITE_ID::BRICK, TILE_SOLID::NOT_SOLID, TILE_SPECIAL::NONE));
+		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME, STATE_EVENT_TYPE::REMOVE));
+		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::ADD, LEVEL::TEST));
+		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::CHANGE));
 	}
 			
 }
 
 void GameState::update(const float dt, const int f)
 {
-	//const int& x = sf::Mouse::getPosition(data.window.getWindow()).x / (l.tileMap.getTile(0).getLength() * l.tileMap.getTile(0).getScale() * data.window.PIXEL_SIZE * Sprite::SPRITE_SIZE);
-	//const int& y = sf::Mouse::getPosition(data.window.getWindow()).y / (l.tileMap.getTile(0).getLength() * l.tileMap.getTile(0).getScale() * data.window.PIXEL_SIZE * Sprite::SPRITE_SIZE);
-	//
-	//t.setString(
-	//	"x: " + std::to_string(x) + 
-	//	"y: " + std::to_string(y)
-	//);
+	t.setString("F: " + std::to_string(f) + "\nT: " + std::to_string(dt));
 }
 
 void GameState::render()
@@ -85,7 +60,6 @@ void GameState::render()
 
 	l.tileMap.draw(w);
 
-	//w.draw(s);
 	w.draw(t);
 
 	w.endDraw();

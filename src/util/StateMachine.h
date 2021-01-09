@@ -4,12 +4,7 @@
 
 #include "../states/State.h"
 
-enum class STATES
-{
-	VOID, // null state
-	MAIN,
-	MENU,
-};
+enum class STATES;
 
 class StateMachine
 {
@@ -39,7 +34,10 @@ public:
 
 	State* currentState();
 
+private:
 	void changeState(const STATES s);
 	void addState(const STATES s, State* ts);
 	void removeState(const STATES s);
+
+	friend class StateEvent;	// you have to do these through my StateEvent wrapper
 };

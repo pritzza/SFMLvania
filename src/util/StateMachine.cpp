@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "../events/StateEvent.h"
+
 StateMachine::~StateMachine()
 {
 	for (auto it = states.begin(); it != states.end(); ++it)

@@ -31,5 +31,6 @@ public:
 	const unsigned int getWidth() const;
 	const unsigned int getHeight() const;
 
+	void draw(Window& window, const bool drawRect);
 	void draw(Window& window);
 };

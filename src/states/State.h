@@ -2,8 +2,15 @@
 
 #include <iostream>
 
+enum class STATES
+{
+	VOID, // null state
+	GAME,
+	EDITOR,
+	MENU,	
+};
+
 class GameData;
-class Window;
 
 class State
 {
@@ -11,9 +18,9 @@ public:
 	GameData& data;
 
 public:
-	State(GameData& data) 
-		: 
-		data{ data } 
+	State(GameData& data)
+		:
+		data{ data }
 	{}
 	virtual ~State() {}
 

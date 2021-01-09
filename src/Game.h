@@ -10,13 +10,13 @@ private:
 	GameData data;
 
 	sf::Clock clock;
-	const unsigned int FPS{ 60 };
+	const unsigned int FPS;
 
 private:
 	bool isRunning() const;
 
 public:
-	Game(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int size);
+	Game(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int size, const unsigned int fps);
 
 	void gameLoop();
 
