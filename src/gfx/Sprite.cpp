@@ -1,7 +1,5 @@
 #include "Sprite.h"
 
-#include <SFML/Graphics.hpp>
-
 #include "../util/Window.h"
 
 Sprite::Sprite(sf::Texture& t, const unsigned int id, const unsigned int w, const unsigned int h, const unsigned int s, const int x, const int y)
@@ -13,9 +11,8 @@ Sprite::Sprite(sf::Texture& t, const unsigned int id, const unsigned int w, cons
 	xPos{ x }, 
 	yPos{ y }
 {
-	this->sprite.setTexture(t);
-
-	this->updateProperties();
+	initSprite(t);
+	initRect();
 }
 
 void Sprite::init(sf::Texture& t, const unsigned int id, const unsigned int w, const unsigned int h, const unsigned int s, const int x, const int y)
@@ -27,15 +24,24 @@ void Sprite::init(sf::Texture& t, const unsigned int id, const unsigned int w, c
 	this->xPos = x;
 	this->yPos = y;
 
-	this->sprite.setTexture(t);
-
-	this->updateProperties();
+	initSprite(t);
+	initRect();
 }
 
-void Sprite::initRect(const unsigned int stroke, const unsigned int opacity)
+void Sprite::initSprite(sf::Texture& t)
 {
-	this->updateBoundingBoxColor(sf::Color(255, 255, 255, 0));
-	this->boundingBox.setOutlineThickness(stroke / 10.f);
+	this->sprite.setTexture(t);
+
+	this->setUp();
+}
+
+void Sprite::initRect()
+{
+	this->boundingBox.setFillColor(sf::Color(255, 255, 255, 0));	// set fill on bounding box to be clear
+
+	this->boundingBox.setOutlineThickness(1.f / 8 );	// creates nice thin outline around every sprites	
+	this->boundingBox.setSize(sf::Vector2f((width * SPRITE_SIZE), (height * SPRITE_SIZE)));		// wrap outline around sprite dimensions
+	this->updateBoundingBoxColor();		// gives color to outline
 }
 
 void Sprite::update()
@@ -43,27 +49,17 @@ void Sprite::update()
 	this->updatePos();
 }
 
-void Sprite::updateProperties()
+void Sprite::setUp()
 {
-	this->update();
-
+	this->updatePos();
 	this->updateScale();
 	this->updateCrop();
+	this->updateBoundingBoxColor();
 }
 
-void Sprite::updateBoundingBoxColor(const sf::Color c)
+void Sprite::updateBoundingBoxColor()
 {
-	this->boundingBox.setFillColor(c);
-}
-
-void Sprite::updateBoundingBoxColor(const BORDER_COLOR c)
-{
-	switch (c)
-	{
-	case BORDER_COLOR::RED:		this->boundingBox.setOutlineColor(sf::Color(255, 32,  32,  255	* (3.f / 4.f)));	break;
-	case BORDER_COLOR::GREEN:	this->boundingBox.setOutlineColor(sf::Color(32,  255, 32,  255	* (3.f / 4.f)));	break;
-	default:					this->boundingBox.setOutlineColor(sf::Color(255, 255, 255, 255 * (3.f / 4.f)));	break;
-	}
+	this->boundingBox.setOutlineColor(this->boundingBoxColor);
 }
 
 void Sprite::updateScale()
@@ -74,18 +70,9 @@ void Sprite::updateScale()
 
 void Sprite::updateCrop()
 {
-	this->sprite.setTextureRect(sf::IntRect(0, height * spriteID * SPRITE_SIZE, width * SPRITE_SIZE, height * SPRITE_SIZE));	// sprite x start in spritesheet, sprite y start in spritesheet, then x, and y end
-	this->boundingBox.setSize(sf::Vector2f(width * SPRITE_SIZE, height * SPRITE_SIZE));	// width, height
-}
-
-sf::Sprite& Sprite::getSprite()
-{
-	return this->sprite;
-}
-
-const unsigned int Sprite::getID() const
-{
-	return this->spriteID;
+	// sprite x start in spritesheet, sprite y start in spritesheet, then x, and y end
+	// use ID to select out image in spritesheet
+	this->sprite.setTextureRect(sf::IntRect(0, height * spriteID * SPRITE_SIZE, width * SPRITE_SIZE, height * SPRITE_SIZE));
 }
 
 void Sprite::updatePos()
@@ -94,10 +81,27 @@ void Sprite::updatePos()
 	this->boundingBox.setPosition(this->xPos, this->yPos);
 }
 
+void Sprite::setBoundingBoxColor(const BORDER_COLOR c)
+{
+	switch (c)
+	{
+	case BORDER_COLOR::RED:		this->boundingBoxColor = sf::Color(200, 0,   0);	break;	// red
+	case BORDER_COLOR::GREEN:	this->boundingBoxColor = sf::Color(0,   200,  0);	break;	// green
+	default:					this->boundingBoxColor = sf::Color(222, 222, 222);	break;	// white
+	}
+}
+
+void Sprite::setBoundingBoxOutlineThickness(const unsigned int t)
+{
+	this->boundingBox.setOutlineThickness(t / 10.f);
+}
+
 void Sprite::setPos(const int x, const int y)
 {
 	this->xPos = x;
 	this->yPos = y;
+
+	this->updatePos();
 }
 
 const sf::Vector2i Sprite::getPos() const
@@ -105,14 +109,24 @@ const sf::Vector2i Sprite::getPos() const
 	return sf::Vector2i(this->xPos, this->yPos);
 }
 
-void Sprite::setTexture(const sf::Texture& t)
+sf::Sprite& Sprite::getSprite()
 {
-	this->sprite.setTexture(t);
+	return this->sprite;
 }
 
 void Sprite::setID(const unsigned int id)
 {
 	this->spriteID = id;
+}
+
+const unsigned int Sprite::getID() const
+{
+	return this->spriteID;
+}
+
+void Sprite::setTexture(const sf::Texture& t)
+{
+	this->sprite.setTexture(t);
 }
 
 void Sprite::draw(Window& window, const bool drawRect)

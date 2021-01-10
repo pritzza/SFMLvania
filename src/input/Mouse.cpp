@@ -67,24 +67,18 @@ void Mouse::update()
 
 const bool Mouse::isClicked(const MOUSE button) const
 {
-	switch (button)
-	{
-	case MOUSE::LEFT:
+	if (button == MOUSE::LEFT)
 		return l.clicked;
-	case MOUSE::RIGHT:
+  //if (button == MOUSE::RIGHT)
 		return r.clicked;
-	}
 }
 
 const bool Mouse::isHeld(const MOUSE button) const
 {
-	switch (button)
-	{
-	case MOUSE::LEFT:
+	if (button == MOUSE::LEFT)
 		return l.held;
-	case MOUSE::RIGHT:
+  //if (button == MOUSE::RIGHT)
 		return r.held;
-	}
 }
 
 const sf::Vector2i Mouse::getPos() const

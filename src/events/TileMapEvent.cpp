@@ -3,7 +3,6 @@
 #include "../levels/TileMap.h"
 #include "../levels/Tile.h"
 
-
 void TileMapEvent::eventAction()
 {
 	this->insertTile();
@@ -11,5 +10,5 @@ void TileMapEvent::eventAction()
 
 void TileMapEvent::insertTile()
 {
-	this->tm.getTile(tileIndex).update(spriteID, solid, special);
+	this->tm.getTile(targetTileIndex).setTile(spriteID, solid, special);
 }

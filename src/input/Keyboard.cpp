@@ -12,24 +12,23 @@ void KeyBoard::update()
 
 void KeyBoard::updateKey(Key& k, sf::Keyboard::Key sfk)
 {
-	if (!k.isHold && k.active)
+	if (k.type == KEY_TYPE::TAP && k.active)	// if its a tap key's been used/active, reset active
 		k.active = false;
 
-	if (sf::Keyboard::isKeyPressed(sfk))
+	if (sf::Keyboard::isKeyPressed(sfk))	// is sfml key is pressed, this key is pressed
 		k.down = true;
 	else
 	{
-		k.down = false;
+		k.down = false;		// if key isnt pressed, then reset all members
 		k.used = false;
 		k.active = false;
 	}
 
-	if (k.down && !(k.used))
+	if (k.down && !(k.used))	// if the key is down and hasnt been used, set it to active (only has an effect on tap keys)
 	{
 		k.active = true;
 		k.used = true;
 	}
-
 }
 
 const bool KeyBoard::isActive(const char c) const

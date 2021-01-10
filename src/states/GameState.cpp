@@ -1,25 +1,18 @@
 #include "GameState.h"
 
-#include "MenuState.h"
-
 #include "../util/GameData.h"
-#include "../util/ResourceManager.h"
 
 #include "../events/TileMapEvent.h"
 #include "../events/StateEvent.h"
 
 #include "../gfx/Sprite.h"
 
-#include "../levels/Tile.h"
 #include "../levels/TileData.h"
-
-#include <string>
-
-#include <iostream>
 
 GameState::GameState(GameData& data, const std::string& levelFileName) 
 	: 
-	State(data)
+	State(data),
+	levelFileName(levelFileName)
 {
 	ResourceManagers& rs = data.resourceManagers;
 

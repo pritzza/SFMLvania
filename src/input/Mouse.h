@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Button.h"
+#include "MouseButton.h"
 
 enum class MOUSE
 {
@@ -19,8 +19,8 @@ private:
 
 	sf::RenderWindow& w;
 
-	Button l;
-	Button r;
+	MouseButton l;
+	MouseButton r;
 
 	int xPos{};
 	int yPos{};
@@ -39,8 +39,8 @@ public:
 	Mouse(sf::RenderWindow& w, const unsigned int FPS)
 		:
 		w{ w },
-		l{ FPS / 4, KEY_TYPE::BOTH },	// 4 is a magic number, it just feels right
-		r{ FPS / 4, KEY_TYPE::BOTH }
+		l{ FPS / 4 },	// 4 is a magic number, it just feels right
+		r{ FPS / 4 }
 	{}
 
 	void update();

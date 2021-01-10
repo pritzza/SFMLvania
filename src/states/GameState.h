@@ -4,12 +4,18 @@
 
 #include "../levels/Level.h"
 
+#include "../player/Player.h"
+
 #include <SFML/Graphics.hpp>
 
 class GameState : public State
 {
 private:
+	Player p;
+
 	Level l;
+
+	const std::string levelFileName;
 
 	sf::Text t;
 

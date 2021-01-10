@@ -12,7 +12,7 @@ public:
 	const unsigned int WINDOW_HEIGHT;
 	const unsigned int PIXEL_SIZE;
 
-	const sf::View view;
+	sf::View view;
 
 public:
 	Window(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int size);

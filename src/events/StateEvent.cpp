@@ -1,9 +1,7 @@
 #include "StateEvent.h"
 
 #include "../util/GameData.h"
-#include "../util/StateMachine.h"
 
-#include "../states/State.h"
 #include "../states/GameState.h"
 #include "../states/MenuState.h"
 #include "../states/EditorState.h"
@@ -26,9 +24,9 @@ void StateEvent::stateEvent()
 
 void StateEvent::add()
 {
-	std::string levelFileName{ "res/levels/test1.txt" };
+	std::string levelFileName{ "res/levels/test1.txt" };	// default case
 
-	switch (lvl)
+	switch (lvl)	// parse enum class LEVEL into actual address of level data file
 	{
 	case LEVEL::TEST:
 		levelFileName = "res/levels/test1.txt";
@@ -44,7 +42,7 @@ void StateEvent::add()
 		this->data.stateMachine.addState(stateID, new EditorState(data, levelFileName));
 		break;
 	case STATES::MENU:
-		this->data.stateMachine.addState(stateID, new MenuState(data));
+		this->data.stateMachine.addState(stateID, new MenuState(data));	// MenuState doesnt have a need for levels, doesnt take it as arguments
 		break;
 	}
 }

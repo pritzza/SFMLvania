@@ -4,20 +4,19 @@
 
 enum class STATE_EVENT_TYPE
 {
-	CHANGE,
-	ADD,
-	REMOVE
+	CHANGE,	// queue stateMachine to change state to a different, existing state
+	ADD,	// queue stateMachine to add a new state to its container of states. Pass in a dynamic pointer of the state you want to add, include what level you want to load if game/editor state
+	REMOVE	// queue stateMachine to remove and deallocate a state from its container
 };
 
 enum class LEVEL
 {
 	VOID,	// NA or null
-	TEST,
+	TEST,	// not really a level, just a demo map that im using for now to mess around in
 };
 
 enum class STATES;
 
-class State;
 class GameData;
 
 class StateEvent : public Event
@@ -27,7 +26,7 @@ private:
 
 	const STATES stateID;
 	const STATE_EVENT_TYPE eventType;
-	const LEVEL lvl;
+	const LEVEL lvl;	// lvl only used when specifiying the level of the state you're adding (some states like MENU wont have levels, so will be set to LEVE::VOID)
 
 private:
 	void stateEvent();

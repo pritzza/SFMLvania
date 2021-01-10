@@ -1,28 +1,22 @@
 #include "EditorState.h"
 
-#include "MenuState.h"
-
 #include "../util/GameData.h"
-#include "../util/ResourceManager.h"
 
 #include "../events/TileMapEvent.h"
 #include "../events/StateEvent.h"
 
 #include "../gfx/Sprite.h"
 
-#include "../levels/Tile.h"
 #include "../levels/TileData.h"
-
-#include <string>
-
-#include <iostream>
 
 EditorState::EditorState(GameData& data, const std::string& levelFileName)
 	:
-	State(data)
+	State(data),
+	levelFileName(levelFileName)
 {
 	ResourceManagers& rs = data.resourceManagers;
 
+	// sets up debug text
 	t.setFont(*rs.fontManager.load(rs.fontManager.add(FONTS::DEFAULT)));
 	t.setScale(.2f, .2f);
 	t.setPosition(1, -1);
@@ -37,20 +31,19 @@ EditorState::EditorState(GameData& data, const std::string& levelFileName)
 	ttSpecial = TILE_SPECIAL::NONE;
 
 	tempTile.init(rs.textureManager, 1, 0, this->ttSpriteID, this->ttSolid, this->ttSpecial);
-	tempTile.initRect(3, 255 * (3.f / 4.f));
-
-	//l.player.s.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::DEFAULT)), 0, 18, 13, 1, 0, 0);
+	tempTile.setBoundingBoxOutlineThickness(3);
 }
 
 EditorState::~EditorState()
 {
-	l.tileMap.save("res/levels/test1.txt");
+	l.tileMap.save(this->levelFileName);
 }
 
 void EditorState::handleInput()
 {
 	if (data.keyBoard.isActive(' '))
 	{
+		l.tileMap.save(this->levelFileName);
 		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::REMOVE));
 		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME, STATE_EVENT_TYPE::ADD, LEVEL::TEST));
 		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME, STATE_EVENT_TYPE::CHANGE));
@@ -71,8 +64,7 @@ void EditorState::handleInput()
 		case TILE_PROPERTY::SOLID:		td.iterateSolid(this->ttSolid);			break;
 		case TILE_PROPERTY::SPECIAL:	td.iterateSpecial(this->ttSpecial);		break;
 		}
-		this->tempTile.update(this->ttSpriteID, this->ttSolid, this->ttSpecial);
-		this->tempTile.initRect(3, 255 * (3.f / 4.f));
+		this->tempTile.setTile(this->ttSpriteID, this->ttSolid, this->ttSpecial);
 	}
 
 	const int& mx = data.mouse.getPos().x;
@@ -81,7 +73,7 @@ void EditorState::handleInput()
 	TileMap& tm = l.tileMap;
 	Tile& t = tm.getTile(0);
 
-	const int& ts = t.getLength() * t.getScale() * data.window.PIXEL_SIZE * Sprite::SPRITE_SIZE;	// tile size
+	const int& ts = Tile::LENGTH * Tile::SCALE * data.window.PIXEL_SIZE * Sprite::SPRITE_SIZE;	// tile size
 
 	if (mx > 0 && mx < ts * tm.getWidth() &&
 		my > 0 && my < ts * tm.getHeight() &&
@@ -96,7 +88,7 @@ void EditorState::handleInput()
 
 void EditorState::update(const float dt, const int f)
 {
-	const int& ts = l.tileMap.getTile(0).getLength() * l.tileMap.getTile(0).getScale() * data.window.PIXEL_SIZE * Sprite::SPRITE_SIZE;	// tile size
+	const int& ts = Tile::LENGTH * Tile::SCALE * data.window.PIXEL_SIZE * Sprite::SPRITE_SIZE;	// tile size
 
 	const int& x = data.mouse.getPos().x / ts;
 	const int& y = data.mouse.getPos().y / ts;
@@ -124,7 +116,7 @@ void EditorState::render()
 
 	tempTile.draw(w, true);
 
-	//l.player.s.draw(w, true);
+	//p.s.draw(w, true);
 
 	w.draw(t);
 

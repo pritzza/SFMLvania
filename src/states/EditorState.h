@@ -15,6 +15,8 @@ class EditorState : public State
 private:
 	Level l;
 
+	const std::string levelFileName;
+
 	unsigned int ttProperty;
 
 	Tile tempTile;
