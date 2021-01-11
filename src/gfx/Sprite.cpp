@@ -3,29 +3,17 @@
 #include "../util/Window.h"
 
 Sprite::Sprite(sf::Texture& t, const unsigned int id, const unsigned int w, const unsigned int h, const unsigned int s, const int x, const int y)
-	:
-	spriteID{ id }, 
-	width{ w }, 
-	height{ h }, 
-	scale{ s },
-	xPos{ x }, 
-	yPos{ y }
 {
-	initSprite(t);
-	initRect();
+	init(t, id, w, h, s, x, y);
 }
 
 void Sprite::init(sf::Texture& t, const unsigned int id, const unsigned int w, const unsigned int h, const unsigned int s, const int x, const int y)
 {
 	this->spriteID = id;
-	this->width = w;
-	this->height = h;
-	this->scale = s;
-	this->xPos = x;
-	this->yPos = y;
+
+	bb.init(w, h, x, y, s);
 
 	initSprite(t);
-	initRect();
 }
 
 void Sprite::initSprite(sf::Texture& t)
@@ -35,13 +23,13 @@ void Sprite::initSprite(sf::Texture& t)
 	this->setUp();
 }
 
-void Sprite::initRect()
+void Sprite::setUp()
 {
-	this->boundingBox.setFillColor(sf::Color(255, 255, 255, 0));	// set fill on bounding box to be clear
+	this->bb.setUp();
 
-	this->boundingBox.setOutlineThickness(1.f / 8 );	// creates nice thin outline around every sprites	
-	this->boundingBox.setSize(sf::Vector2f((width * SPRITE_SIZE), (height * SPRITE_SIZE)));		// wrap outline around sprite dimensions
-	this->updateBoundingBoxColor();		// gives color to outline
+	this->updatePos();
+	this->updateScale();
+	this->updateCrop();
 }
 
 void Sprite::update()
@@ -49,64 +37,38 @@ void Sprite::update()
 	this->updatePos();
 }
 
-void Sprite::setUp()
-{
-	this->updatePos();
-	this->updateScale();
-	this->updateCrop();
-	this->updateBoundingBoxColor();
-}
-
-void Sprite::updateBoundingBoxColor()
-{
-	this->boundingBox.setOutlineColor(this->boundingBoxColor);
-}
-
 void Sprite::updateScale()
 {
-	this->sprite.setScale(scale, scale);
-	this->boundingBox.setScale(scale, scale);
+	const int s = bb.getScale();
+
+	this->sprite.setScale(s, s);
 }
 
 void Sprite::updateCrop()
 {
 	// sprite x start in spritesheet, sprite y start in spritesheet, then x, and y end
 	// use ID to select out image in spritesheet
-	this->sprite.setTextureRect(sf::IntRect(0, height * spriteID * SPRITE_SIZE, width * SPRITE_SIZE, height * SPRITE_SIZE));
+	const int width = bb.getSize().x;
+	const int height = bb.getSize().y;
+
+	this->sprite.setTextureRect(sf::IntRect(0, width * spriteID * SPRITE_SIZE, width * SPRITE_SIZE, height * SPRITE_SIZE));
 }
 
 void Sprite::updatePos()
 {
-	this->sprite.setPosition(this->xPos, this->yPos);
-	this->boundingBox.setPosition(this->xPos, this->yPos);
-}
-
-void Sprite::setBoundingBoxColor(const BORDER_COLOR c)
-{
-	switch (c)
-	{
-	case BORDER_COLOR::RED:		this->boundingBoxColor = sf::Color(200, 0,   0);	break;	// red
-	case BORDER_COLOR::GREEN:	this->boundingBoxColor = sf::Color(0,   200,  0);	break;	// green
-	default:					this->boundingBoxColor = sf::Color(222, 222, 222);	break;	// white
-	}
-}
-
-void Sprite::setBoundingBoxOutlineThickness(const unsigned int t)
-{
-	this->boundingBox.setOutlineThickness(t / 10.f);
+	this->sprite.setPosition(bb.getPos());
 }
 
 void Sprite::setPos(const int x, const int y)
 {
-	this->xPos = x;
-	this->yPos = y;
+	this->bb.setPos(x, y);
 
 	this->updatePos();
 }
 
-const sf::Vector2i Sprite::getPos() const
+const sf::Vector2f Sprite::getPos() const
 {
-	return sf::Vector2i(this->xPos, this->yPos);
+	return this->bb.getPos();
 }
 
 sf::Sprite& Sprite::getSprite()
@@ -134,7 +96,7 @@ void Sprite::draw(Window& window, const bool drawRect)
 	window.draw(this->sprite);
 
 	if (drawRect)
-		window.draw(this->boundingBox);
+		window.draw(this->bb.getRect());
 }
 
 void Sprite::draw(Window& window)

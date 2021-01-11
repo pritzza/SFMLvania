@@ -6,7 +6,8 @@ enum class TEXTURES
 {
 	DEFAULT,
 	MONKEY,
-	TILES,
+	TILESET,
+	MONKEY2,
 };
 enum class FONTS
 {
@@ -35,8 +36,9 @@ private:
 				resources.insert({ resourceID, r });
 				return resourceID;    // successfully adds resource to resources under resourceID
 			}
+			return Key::DEFAULT;    // didnt load sucessfully
 		}
-		return Key::DEFAULT;    // didnt load sucessfully
+		return resourceID;	// already loaded, do nothing
 	}
 
 public:
@@ -51,7 +53,8 @@ public:
 		{
 		case TEXTURES::DEFAULT:	return addFromFile("res/sprites/chara_01.png", resourceID);
 		case TEXTURES::MONKEY:	return addFromFile("res/sprites/monkeySpriteSheet.png", resourceID);
-		case TEXTURES::TILES:	return addFromFile("res/sprites/tiles.png", resourceID);
+		case TEXTURES::TILESET:	return addFromFile("res/sprites/tiles.png", resourceID);
+		case TEXTURES::MONKEY2:	return addFromFile("res/sprites/monkeySprite.png", resourceID);
 		}
 	}
 

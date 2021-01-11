@@ -17,26 +17,31 @@ EditorState::EditorState(GameData& data, const std::string& levelFileName)
 	ResourceManagers& rs = data.resourceManagers;
 
 	// sets up debug text
-	t.setFont(*rs.fontManager.load(rs.fontManager.add(FONTS::DEFAULT)));
+	t.setFont(*rs.fontManager.load(FONTS::DEFAULT));
 	t.setScale(.2f, .2f);
 	t.setPosition(1, -1);
 
-	rs.textureManager.add(TEXTURES::TILES);
+	rs.textureManager.add(TEXTURES::TILESET);
 
 	l.tileMap.load(levelFileName, rs.textureManager);
 
+	// init temp tile
 	ttProperty = TILE_PROPERTY::SPRITE;
 	ttSpriteID = TILE_SPRITE_ID::BRICK;
 	ttSolid = TILE_SOLID::NOT_SOLID;
 	ttSpecial = TILE_SPECIAL::NONE;
 
 	tempTile.init(rs.textureManager, 1, 0, this->ttSpriteID, this->ttSolid, this->ttSpecial);
-	tempTile.setBoundingBoxOutlineThickness(3);
+	tempTile.setOutlineThickness(2);
+
+	data.camera.setView();
 }
 
 EditorState::~EditorState()
 {
 	l.tileMap.save(this->levelFileName);
+
+	//data.resourceManagers.textureManager.remove(TEXTURES::TILESET);
 }
 
 void EditorState::handleInput()
@@ -45,8 +50,8 @@ void EditorState::handleInput()
 	{
 		l.tileMap.save(this->levelFileName);
 		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::REMOVE));
-		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME, STATE_EVENT_TYPE::ADD, LEVEL::TEST));
-		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME, STATE_EVENT_TYPE::CHANGE));
+		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME,   STATE_EVENT_TYPE::ADD, LEVEL::TEST));
+		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME,   STATE_EVENT_TYPE::CHANGE));
 	}
 
 	if (data.keyBoard.isActive('S'))

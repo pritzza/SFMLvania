@@ -21,7 +21,7 @@ void Tile::initSprite(ResourceManager<TEXTURES, sf::Texture>& tm, const int lvlw
 	const unsigned int x{ (pos % lvlw) * this->LENGTH * this->SCALE * this->sprite.SPRITE_SIZE };
 	const unsigned int y{ (pos / lvlw) * this->LENGTH * this->SCALE * this->sprite.SPRITE_SIZE };
 
-	this->sprite.init(*tm.load(TEXTURES::TILES), id, LENGTH, LENGTH, SCALE, x, y);
+	this->sprite.init(*tm.load(TEXTURES::TILESET), id, LENGTH, LENGTH, SCALE, x, y);
 }
 
 void Tile::setTile(const unsigned int spriteID, const TILE_SOLID solid, const TILE_SPECIAL special)
@@ -41,10 +41,10 @@ void Tile::updateSprite()
 
 void Tile::updateRectColor()
 {
-	switch (solid)	// gives color to tiles' sprite's boundingBox depending on solid value
+	switch (solid)	// gives color to tiles' sprite's bb depending on solid value
 	{
-	case TILE_SOLID::NOT_SOLID:	 this->sprite.setBoundingBoxColor(BORDER_COLOR::WHITE);		break;
-	case TILE_SOLID::SOLID:		 this->sprite.setBoundingBoxColor(BORDER_COLOR::RED);	    break;
+	case TILE_SOLID::NOT_SOLID:	 this->sprite.bb.setColor(BORDER_COLOR::WHITE);		break;
+	case TILE_SOLID::SOLID:		 this->sprite.bb.setColor(BORDER_COLOR::RED);	    break;
 	}
 }
 
@@ -56,9 +56,9 @@ void Tile::setPosition(const int x, const int y)
 	);
 }
 
-void Tile::setBoundingBoxOutlineThickness(const unsigned int t)
+void Tile::setOutlineThickness(const unsigned int t)
 {
-	this->sprite.setBoundingBoxOutlineThickness(t);
+	this->sprite.bb.setOutlineThickness(t);
 }
 
 const unsigned int Tile::getSpriteID() const

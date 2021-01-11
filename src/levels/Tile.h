@@ -46,7 +46,7 @@ public:
 	const TILE_SOLID getSolid() const;
 	const TILE_SPECIAL getSpecial() const;
 
-	void setBoundingBoxOutlineThickness(const unsigned int t);
+	void setOutlineThickness(const unsigned int t);
 
 	void setPosition(const int x, const int y);
 	

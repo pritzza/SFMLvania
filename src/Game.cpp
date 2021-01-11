@@ -10,6 +10,11 @@ Game::Game(const std::string& windowName, const unsigned int width, const unsign
 {
 	data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::ADD, LEVEL::TEST));	// add starting state
 	data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::CHANGE));		// change to it
+
+	// load default resources
+	data.resourceManagers.textureManager.add(TEXTURES::DEFAULT);
+	data.resourceManagers.fontManager.add(FONTS::DEFAULT);
+	//data.resourceManagers.soundManager.add(SOUNDS::DEFAULT);
 }
 
 void Game::gameLoop()

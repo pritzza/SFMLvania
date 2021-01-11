@@ -11,7 +11,7 @@ void StateEvent::stateEvent()
 	switch (eventType)
 	{
 	case STATE_EVENT_TYPE::ADD:
-		add();
+		add();	// the constructor for a state is called in add()
 		break;
 	case STATE_EVENT_TYPE::CHANGE:
 		change();

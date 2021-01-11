@@ -1,19 +1,21 @@
 #include "Window.h"
 
-Window::Window(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int size)
+#include "../gfx/Camera.h"
+
+Window::Window(const std::string& windowName, Camera& camera, const unsigned int width, const unsigned int height, const unsigned int size)
 	:
 	window(sf::VideoMode(width, height), windowName),
+	camera(camera),
 	WINDOW_WIDTH(width),
 	WINDOW_HEIGHT(height),
-	PIXEL_SIZE(size),
-	view(sf::Vector2f(WINDOW_WIDTH / PIXEL_SIZE / 2u, WINDOW_HEIGHT / PIXEL_SIZE / 2u), sf::Vector2f(WINDOW_WIDTH / PIXEL_SIZE, WINDOW_HEIGHT / PIXEL_SIZE))
+	PIXEL_SIZE(size)
 {
-	//view.reset(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
-	window.setView(view);
 }
 
 void Window::update()
 {
+	window.setView(camera.getView());
+
 	sf::Event event;
 
 	if (this->window.pollEvent(event))

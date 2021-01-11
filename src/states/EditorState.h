@@ -17,9 +17,9 @@ private:
 
 	const std::string levelFileName;
 
-	unsigned int ttProperty;
-
+	// tempTile is the tile visualization of the tile data you have selected in the editor
 	Tile tempTile;
+	unsigned int ttProperty;	// which property you're selected to iterate through
 	unsigned int ttSpriteID;
 	TILE_SOLID ttSolid;
 	TILE_SPECIAL ttSpecial;

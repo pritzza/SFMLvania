@@ -11,7 +11,8 @@ const unsigned int LevelParser::parseSpriteID(const char id) const
 	case '#': tile = TILE_SPRITE_ID::BRICK;		break;
 	case 'o': tile = TILE_SPRITE_ID::GROUND;	break;
 	case '-': tile = TILE_SPRITE_ID::PLATFORM;	break;
-	case 'v': tile = TILE_SPRITE_ID::FACE;	break;
+	case 'v': tile = TILE_SPRITE_ID::FACE;		break;
+	case 'b': tile = TILE_SPRITE_ID::BARREL;	break;
 	}
 
 	return tile;
@@ -46,11 +47,12 @@ const char LevelParser::unparseSpriteID(const unsigned int id) const
 	char c{ ' ' };
 	switch (id)
 	{
-	case TILE_SPRITE_ID::AIR: c = ' '; break;
-	case TILE_SPRITE_ID::BRICK: c = '#'; break;
-	case TILE_SPRITE_ID::GROUND: c = 'o'; break;
-	case TILE_SPRITE_ID::PLATFORM: c = '-'; break;
-	case TILE_SPRITE_ID::FACE: c = 'v'; break;
+	case TILE_SPRITE_ID::AIR:		c = ' ';	break;
+	case TILE_SPRITE_ID::BRICK:		c = '#';	break;
+	case TILE_SPRITE_ID::GROUND:	c = 'o';	break;
+	case TILE_SPRITE_ID::PLATFORM:	c = '-';	break;
+	case TILE_SPRITE_ID::FACE:		c = 'v';	break;
+	case TILE_SPRITE_ID::BARREL:	c = 'b';	break;
 	}
 
 	return c;

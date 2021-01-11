@@ -1,20 +1,14 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "../util/AABB.h"
 
 class Window;
 
 enum SPRITE_ID	// loadable Sprites
 {
 	MISSING,
-	MONKEY
-};
-
-enum class BORDER_COLOR	// colors that can be given to the outline of bounding boxes
-{
-	RED,
-	WHITE,
-	GREEN,
+	MONKEY,
+	//MONKEY2	// MAKKE SURE THE ORDER OF THESE ENUMS CORRESPOND TO THE ORDER OF SPRITES IN THE SPRITESHEET FROM TOP TO BOTTOM
 };
 
 class Sprite
@@ -25,29 +19,18 @@ public:
 private:
 	sf::Sprite sprite;
 
-	sf::RectangleShape boundingBox;
-	sf::Color boundingBoxColor;
-
 	unsigned int spriteID{ 0 };	// used for identifying sprite texture and cropping texture out of spritesheet
 
-	// dimensions of tiles
-	unsigned int width{ 1 };
-	unsigned int height{ 1 };
-	unsigned int scale{ 1 };
-
 public:
-	int xPos{ 0 };
-	int yPos{ 0 };
+	AABB bb;
 
 private:
 	void initSprite(sf::Texture& t);	// sets sprite's texture and calls setUp();
-	void initRect();	// sets up bounding box
 
 	void virtual updateCrop();	// set textureRect around sprite using spriteID and dimensions
 
 	void updateScale();
 	void updatePos();	// sets wrapper's sf::Sprite's position to wrappers x y position
-	void updateBoundingBoxColor();
 
 	void setTexture(const sf::Texture& t);
 
@@ -66,14 +49,11 @@ public:
 	sf::Sprite& getSprite();
 
 	void setPos(const int x, const int y);	// changes wrappers x y position
-	const sf::Vector2i getPos() const;		// returns sf::Vector2i of x y position
-
-	void setBoundingBoxColor(const BORDER_COLOR c);
-	void setBoundingBoxOutlineThickness(const unsigned int t);
+	const sf::Vector2f getPos() const;		// returns sf::Vector2i of x y position
 
 	void setID(const unsigned int id);
 	const unsigned int getID() const;
-	
+
 	void draw(Window& Window, const bool drawRect);
 	void draw(Window& Window);
 };

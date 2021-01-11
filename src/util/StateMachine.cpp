@@ -54,7 +54,7 @@ void StateMachine::processChanging()
 void StateMachine::processStateChange()
 {
 	processRemoving();
-	processAdding();
+	processAdding();	// the constructor for a state is called as soon as you call stateEvent.add()
 	processChanging();
 }
 

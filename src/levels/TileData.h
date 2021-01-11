@@ -10,6 +10,7 @@ enum TILE_SPRITE_ID
 	GROUND,
 	PLATFORM,
 	FACE,
+	BARREL,
 };
 
 enum class TILE_SOLID
@@ -45,7 +46,8 @@ public:
 		case TILE_SPRITE_ID::BRICK:		id = TILE_SPRITE_ID::GROUND;	 break;
 		case TILE_SPRITE_ID::GROUND:	id = TILE_SPRITE_ID::PLATFORM;	 break;
 		case TILE_SPRITE_ID::PLATFORM:	id = TILE_SPRITE_ID::FACE;		 break;	// remember the break statements
-		case TILE_SPRITE_ID::FACE:		// skip and cycle back						
+		case TILE_SPRITE_ID::FACE:		id = TILE_SPRITE_ID::BARREL;	 break;
+		case TILE_SPRITE_ID::BARREL:	// skip and cycle back	
 		default:						id = TILE_SPRITE_ID::AIR;		 break;
 		}
 	}
