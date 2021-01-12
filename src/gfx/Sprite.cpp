@@ -35,6 +35,7 @@ void Sprite::setUp()
 void Sprite::update()
 {
 	this->updatePos();
+	this->bb.update();
 }
 
 void Sprite::updateScale()
@@ -64,6 +65,16 @@ void Sprite::setPos(const int x, const int y)
 	this->bb.setPos(x, y);
 
 	this->updatePos();
+}
+
+const unsigned int Sprite::getPixelWidth() const
+{
+	return this->bb.getSize().x * bb.getScale() * Sprite::SPRITE_SIZE;
+}
+
+const unsigned int Sprite::getPixelHeight() const
+{
+	return this->bb.getSize().y * bb.getScale() * Sprite::SPRITE_SIZE;
 }
 
 const sf::Vector2f Sprite::getPos() const

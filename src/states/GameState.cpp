@@ -26,7 +26,15 @@ GameState::GameState(GameData& data, const std::string& levelFileName)
 
 	data.camera.setView();
 
-	p.s.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::MONKEY2)), 0, 3, 2, 1, 0, 0);
+	p.s.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::MONKEY2)), 
+		0,  // id
+		3,	// w
+		2,  // h
+		1,  // scale
+		(data.window.WINDOW_WIDTH / data.window.PIXEL_SIZE / 2), // x
+		0	// y
+	);
+
 }
 
 GameState::~GameState()
@@ -37,18 +45,28 @@ GameState::~GameState()
 
 void GameState::handleInput()
 {
-	if (data.keyBoard.isActive(' '))
+	if (data.keyBoard.isActive('e'))
 	{
 		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME,   STATE_EVENT_TYPE::REMOVE));
 		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::ADD, LEVEL::TEST));
 		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::CHANGE));
 	}
-			
+
+	if (data.keyBoard.isActive('w'))
+		p.move(0, -1);
+	if (data.keyBoard.isActive('a'))
+		p.move(-1, 0);
+	if (data.keyBoard.isActive('s'))
+		p.move(0, 1);
+	if (data.keyBoard.isActive('d'))
+		p.move(1, 0);
 }
 
 void GameState::update(const float dt, const int f)
 {
 	t.setString("F: " + std::to_string(f) + "\nT: " + std::to_string(dt));
+
+	p.update(dt, l.tileMap);
 }
 
 void GameState::render()

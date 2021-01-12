@@ -14,6 +14,8 @@ enum class TEXTURES;
 enum class TILE_SOLID;
 enum class TILE_SPECIAL;
 
+enum class BORDER_COLOR;
+
 class Tile
 {
 public:
@@ -39,15 +41,21 @@ public:
 	// assignes new tile data and updates sprite (calls updateRectColor and s.setUp())
 	void setTile(const unsigned int sprite, const TILE_SOLID solid, const TILE_SPECIAL special);
 
-	void draw(Window& window, const bool drawRect);	// pass in value for whether you want to draw bounding boxes
-	void draw(Window& window);
+	const AABB& getAABB() const;
 
 	const unsigned int getSpriteID() const;
 	const TILE_SOLID getSolid() const;
 	const TILE_SPECIAL getSpecial() const;
 
+	const unsigned int getSize() const;	// returns size of tile in pixels
+
 	void setOutlineThickness(const unsigned int t);
+	void setOutlineColor(const BORDER_COLOR& c);
 
 	void setPosition(const int x, const int y);
+	const sf::Vector2f getPosition() const;
+
+	void draw(Window& window, const bool drawRect);	// pass in value for whether you want to draw bounding boxes
+	void draw(Window& window);
 	
 };

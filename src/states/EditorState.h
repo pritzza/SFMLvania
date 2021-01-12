@@ -5,6 +5,8 @@
 #include "../levels/Level.h"
 #include "../levels/Tile.h"
 
+#include "../player/Player.h"
+
 #include <SFML/Graphics.hpp>
 
 enum class TILE_SOLID;
@@ -13,6 +15,8 @@ enum class TILE_SPECIAL;
 class EditorState : public State
 {
 private:
+	Player p;
+
 	Level l;
 
 	const std::string levelFileName;

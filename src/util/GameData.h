@@ -13,12 +13,12 @@
 class GameData
 {
 public:
-	GameData(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int size, const unsigned int FPS)
+	GameData(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int FPS)
 		:
-		window(windowName, camera, width, height, size),
+		window(windowName, camera, width, height),
 		mouse(window.getWindow(), FPS),
 		keyBoard(window.getWindow(), FPS),
-		camera(width, height, size)
+		camera(width, height)
 	{}
 
 	StateMachine stateMachine;

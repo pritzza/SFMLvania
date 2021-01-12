@@ -1,18 +1,20 @@
 #include "Camera.h"
 
-Camera::Camera(const unsigned int W_W, const unsigned int W_H, const unsigned int ZOOM)
+#include "../util/Window.h"
+
+Camera::Camera(const unsigned int W_W, const unsigned int W_H)
 	:
 	WIN_W(W_W),
-	WIN_H(W_H),
-	BASE_ZOOM(ZOOM)
+	WIN_H(W_H)
 { 
 	setView();
 }
 
 void Camera::setView()
 {
-	this->view.setCenter(xPos + WIN_W / BASE_ZOOM / 2, yPos + WIN_H / BASE_ZOOM / 2);
-	this->view.setSize(WIN_W / BASE_ZOOM, WIN_H / BASE_ZOOM);
+	this->view.setCenter(xPos + WIN_W / Window::PIXEL_SIZE / 2, yPos + WIN_H / Window::PIXEL_SIZE / 2);
+
+	this->view.setSize(WIN_W / Window::PIXEL_SIZE, WIN_H / Window::PIXEL_SIZE);
 }
 
 const sf::View& Camera::getView() const

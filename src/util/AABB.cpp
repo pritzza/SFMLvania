@@ -33,6 +33,18 @@ void AABB::update()
 	updatePos();
 }
 
+const bool AABB::isColliding(const AABB& b) const
+{
+	const int& b1x = b.getPos().x;
+	const int& b1y = b.getPos().y;
+
+	const int& b2x = b.getPos().x + (b.getSize().x * b.getScale() * Sprite::SPRITE_SIZE);
+	const int& b2y = b.getPos().y + (b.getSize().y * b.getScale() * Sprite::SPRITE_SIZE);
+
+	if (this->xPos )
+	return false;
+}
+
 void AABB::updateSize()
 {
 	this->rect.setSize(sf::Vector2f(width * scale * Sprite::SPRITE_SIZE, height * scale * Sprite::SPRITE_SIZE));	// wrap outline around 's dimensions
@@ -56,6 +68,8 @@ void AABB::setColor(const BORDER_COLOR c)
 	case BORDER_COLOR::GREEN:	this->color = sf::Color(0, 200, 0);	break;	// green
 	default:					this->color = sf::Color(222, 222, 222);	break;	// white
 	}
+
+	updateColor();
 }
 
 void AABB::setOutlineThickness(const unsigned int t)

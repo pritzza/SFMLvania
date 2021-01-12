@@ -35,6 +35,16 @@ EditorState::EditorState(GameData& data, const std::string& levelFileName)
 	tempTile.setOutlineThickness(2);
 
 	data.camera.setView();
+
+
+	p.s.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::MONKEY2)),
+		0,  // id
+		3,	// w
+		2,  // h
+		1,  // scale
+		(data.window.WINDOW_WIDTH / data.window.PIXEL_SIZE / 2), // x
+		0	// y
+	);
 }
 
 EditorState::~EditorState()
@@ -46,7 +56,7 @@ EditorState::~EditorState()
 
 void EditorState::handleInput()
 {
-	if (data.keyBoard.isActive(' '))
+	if (data.keyBoard.isActive('e'))
 	{
 		l.tileMap.save(this->levelFileName);
 		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::REMOVE));
@@ -58,6 +68,11 @@ void EditorState::handleInput()
 	{
 		TileData td;
 		td.iterateProperty(ttProperty);
+	}
+
+	if (data.keyBoard.isActive(' '))
+	{
+		//p.jump();
 	}
 
 	if (data.mouse.isClicked(MOUSE::RIGHT))
@@ -89,6 +104,16 @@ void EditorState::handleInput()
 
 		data.eventHandler.addEvent(new TileMapEvent(l.tileMap, x + (y * tm.getWidth()), this->ttSpriteID, this->ttSolid, this->ttSpecial));
 	}
+
+
+	if (data.keyBoard.isActive('w'))
+		p.move(0, -1);
+	if (data.keyBoard.isActive('a'))
+		p.move(-1, 0);
+	if (data.keyBoard.isActive('s'))
+		p.move(0, 1);
+	if (data.keyBoard.isActive('d'))
+		p.move(1, 0);
 }
 
 void EditorState::update(const float dt, const int f)
@@ -100,6 +125,9 @@ void EditorState::update(const float dt, const int f)
 
 	this->tempTile.setPosition(x, y);
 
+	for (int i = 0; i < l.tileMap.getHeight() * l.tileMap.getWidth(); ++i)
+		l.tileMap.getTile(i).setOutlineThickness(1);
+
 	t.setString(
 		"x: " + std::to_string(x) +
 		"y: " + std::to_string(y)
@@ -109,6 +137,8 @@ void EditorState::update(const float dt, const int f)
 		t.setString(
 			"active"
 		);
+
+	p.update(dt, l.tileMap);
 }
 
 void EditorState::render()
@@ -121,7 +151,7 @@ void EditorState::render()
 
 	tempTile.draw(w, true);
 
-	//p.s.draw(w, true);
+	p.s.draw(w, true);
 
 	w.draw(t);
 

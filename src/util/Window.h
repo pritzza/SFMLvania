@@ -6,6 +6,9 @@ class Camera;
 
 class Window
 {
+public:
+	static constexpr unsigned int PIXEL_SIZE{ 8 };
+
 private:
 	sf::RenderWindow window;
 
@@ -14,10 +17,9 @@ private:
 public:
 	const unsigned int WINDOW_WIDTH;
 	const unsigned int WINDOW_HEIGHT;
-	const unsigned int PIXEL_SIZE;
 
 public:
-	Window(const std::string& windowName, Camera& camera, const unsigned int width, const unsigned int height, const unsigned int size);
+	Window(const std::string& windowName, Camera& camera, const unsigned int width, const unsigned int height);
 
 	void update();
 

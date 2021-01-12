@@ -56,9 +56,29 @@ void Tile::setPosition(const int x, const int y)
 	);
 }
 
+const sf::Vector2f Tile::getPosition() const
+{
+	return this->sprite.bb.getPos();
+}
+
 void Tile::setOutlineThickness(const unsigned int t)
 {
 	this->sprite.bb.setOutlineThickness(t);
+}
+
+void Tile::setOutlineColor(const BORDER_COLOR& c)
+{
+	this->sprite.bb.setColor(c);
+}
+
+const unsigned int Tile::getSize() const
+{
+	return Tile::LENGTH * Tile::SCALE * Sprite::SPRITE_SIZE;
+}
+
+const AABB& Tile::getAABB() const
+{
+	return this->sprite.bb;
 }
 
 const unsigned int Tile::getSpriteID() const

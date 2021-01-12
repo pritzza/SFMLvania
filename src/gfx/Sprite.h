@@ -48,6 +48,9 @@ public:
 	//////////////////// wrapper getters & setters ////////////////////
 	sf::Sprite& getSprite();
 
+	const unsigned int getPixelWidth() const;	// gives width in pixels
+	const unsigned int getPixelHeight() const;	// gives height in pixels
+
 	void setPos(const int x, const int y);	// changes wrappers x y position
 	const sf::Vector2f getPos() const;		// returns sf::Vector2i of x y position
 

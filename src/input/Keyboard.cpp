@@ -6,6 +6,7 @@ void KeyBoard::update()
 	updateKey(a, sf::Keyboard::A);
 	updateKey(s, sf::Keyboard::S);
 	updateKey(d, sf::Keyboard::D);
+	updateKey(e, sf::Keyboard::E);
 	updateKey(shift, sf::Keyboard::LShift);
 	updateKey(space, sf::Keyboard::Space);
 }
@@ -39,6 +40,7 @@ const bool KeyBoard::isActive(const char c) const
 	case 'a':	return a.active;
 	case 's':	return s.active;
 	case 'd':	return d.active;
+	case 'e':	return e.active;
 	case 'S':	return shift.active;
 	case ' ':	return space.active;
 	}

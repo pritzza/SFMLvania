@@ -2,13 +2,12 @@
 
 #include "../gfx/Camera.h"
 
-Window::Window(const std::string& windowName, Camera& camera, const unsigned int width, const unsigned int height, const unsigned int size)
+Window::Window(const std::string& windowName, Camera& camera, const unsigned int width, const unsigned int height)
 	:
 	window(sf::VideoMode(width, height), windowName),
 	camera(camera),
 	WINDOW_WIDTH(width),
-	WINDOW_HEIGHT(height),
-	PIXEL_SIZE(size)
+	WINDOW_HEIGHT(height)
 {
 }
 

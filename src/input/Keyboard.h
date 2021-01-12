@@ -9,7 +9,7 @@ class KeyBoard
 private:
 	sf::RenderWindow& window;
 
-	Key w, a, s, d, shift, space;
+	Key w, a, s, d, e, shift, space;
 
 private:
 	void updateKey(Key& k, sf::Keyboard::Key sfk);	// updates state of keys
@@ -22,8 +22,9 @@ public:
 		a{ KEY_TYPE::HOLD },
 		s{ KEY_TYPE::HOLD },
 		d{ KEY_TYPE::HOLD },
+		e{ KEY_TYPE::TAP },
 		shift{ KEY_TYPE::TAP },
-		space{ KEY_TYPE::TAP }
+		space{ KEY_TYPE::HOLD }
 	{}
 
 	void update();	// calls updateKey on every key

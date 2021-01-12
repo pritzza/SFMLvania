@@ -27,6 +27,8 @@ public:
 	void save(const std::string& fileName);
 
 	Tile& getTile(const unsigned int index);
+	Tile& getTile(const int x, const int y);	// returns tile at exact pixel
+
 
 	const unsigned int getWidth() const;
 	const unsigned int getHeight() const;

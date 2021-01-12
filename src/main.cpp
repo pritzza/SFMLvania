@@ -2,7 +2,7 @@
 
 int main()
 {
-    Game game("SFMLvania", 1920/2, 1080/2, 8, 60);
+    Game game("SFMLvania", 1920/2, 1080/2, 60);
 
     game.gameLoop();
 

@@ -3,9 +3,9 @@
 #include "util/GameData.h"
 #include "events/StateEvent.h"
 
-Game::Game(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int size, const unsigned int fps)
+Game::Game(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int fps)
 	:
-	data(windowName, width, height, size, fps),
+	data(windowName, width, height, fps),
 	FPS(fps)
 {
 	data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::ADD, LEVEL::TEST));	// add starting state

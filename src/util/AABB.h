@@ -38,6 +38,8 @@ public:
 
 	void update();
 
+	const bool isColliding(const AABB& b) const;
+
 	void setColor(const BORDER_COLOR c);
 	void setOutlineThickness(const unsigned int t);
 

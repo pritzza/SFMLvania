@@ -13,11 +13,10 @@ private:
 	const unsigned int WIN_H{};
 	const unsigned int WIN_W{};
 
-	const float BASE_ZOOM;	// always zoomed in atleast this much
-	float zoomModifier{};
+	float zoom{};
 
 public:
-	Camera(const unsigned int W_W, const unsigned int W_H, const unsigned int ZOOM);
+	Camera(const unsigned int W_W, const unsigned int W_H);
 
 	void setView();	// gets the camera pointed in the right place
 
