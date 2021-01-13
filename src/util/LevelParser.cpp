@@ -25,7 +25,9 @@ const TILE_SOLID LevelParser::parseSolid(const char id) const
 
 	switch (id)
 	{
-	case ' ': solid = TILE_SOLID::NOT_SOLID;
+	case ' ': solid = TILE_SOLID::NOT_SOLID;		break;
+	case '.': solid = TILE_SOLID::SOLID;			break;	
+	case '_': solid = TILE_SOLID::PLATFORM;			break;
 	}
 
 	return solid;
@@ -65,8 +67,9 @@ const char LevelParser::unparseSolid(const TILE_SOLID solid) const
 	char c{ ' ' };
 	switch (solid)
 	{
-	case TILE_SOLID::SOLID: c = '.'; break;
+	case TILE_SOLID::SOLID:		c = '.'; break;
 	case TILE_SOLID::NOT_SOLID: c = ' '; break;
+	case TILE_SOLID::PLATFORM:	c = '_'; break;
 	}
 
 	return c;

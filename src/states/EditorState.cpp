@@ -32,7 +32,7 @@ EditorState::EditorState(GameData& data, const std::string& levelFileName)
 	ttSpecial = TILE_SPECIAL::NONE;
 
 	tempTile.init(rs.textureManager, 1, 0, this->ttSpriteID, this->ttSolid, this->ttSpecial);
-	tempTile.setOutlineThickness(2);
+	tempTile.setOutlineThickness(3);
 
 	data.camera.setView();
 
@@ -85,6 +85,7 @@ void EditorState::handleInput()
 		case TILE_PROPERTY::SPECIAL:	td.iterateSpecial(this->ttSpecial);		break;
 		}
 		this->tempTile.setTile(this->ttSpriteID, this->ttSolid, this->ttSpecial);
+		tempTile.setOutlineThickness(3);
 	}
 
 	const int& mx = data.mouse.getPos().x;
@@ -104,7 +105,6 @@ void EditorState::handleInput()
 
 		data.eventHandler.addEvent(new TileMapEvent(l.tileMap, x + (y * tm.getWidth()), this->ttSpriteID, this->ttSolid, this->ttSpecial));
 	}
-
 
 	if (data.keyBoard.isActive('w'))
 		p.move(0, -1);

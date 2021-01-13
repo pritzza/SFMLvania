@@ -45,6 +45,7 @@ void Tile::updateRectColor()
 	{
 	case TILE_SOLID::NOT_SOLID:	 this->sprite.bb.setColor(BORDER_COLOR::WHITE);		break;
 	case TILE_SOLID::SOLID:		 this->sprite.bb.setColor(BORDER_COLOR::RED);	    break;
+	case TILE_SOLID::PLATFORM:   this->sprite.bb.setColor(BORDER_COLOR::GREEN);	    break;
 	}
 }
 

@@ -18,7 +18,7 @@ enum class TILE_SOLID
 {
 	SOLID,
 	NOT_SOLID,
-	//PLATFORM,
+	PLATFORM,
 	//STAIRS,
 };
 
@@ -59,7 +59,8 @@ public:
 		switch (solid)
 		{
 		case TILE_SOLID::SOLID:			solid = TILE_SOLID::NOT_SOLID;	break;
-		case TILE_SOLID::NOT_SOLID:		// skip and cycle back					
+		case TILE_SOLID::NOT_SOLID:		solid = TILE_SOLID::PLATFORM;   break;
+		case TILE_SOLID::PLATFORM:		// skip and cycle back	
 		default:						solid = TILE_SOLID::SOLID;		break;
 		}
 	}
