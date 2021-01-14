@@ -43,6 +43,8 @@ public:
 	void setColor(const BORDER_COLOR c);
 	void setOutlineThickness(const unsigned int t);
 
+	void turnIntoPoint();
+
 	// setters and getters
 	const sf::RectangleShape& getRect() const;
 

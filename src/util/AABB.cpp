@@ -2,6 +2,8 @@
 
 #include "../gfx/Sprite.h"
 
+#include "../util/Window.h"
+
 AABB::AABB(const unsigned int w, const unsigned int h, const int x, const int y, const unsigned int s)
 {
 	init(w, h, x, y, s); 
@@ -74,7 +76,13 @@ void AABB::setColor(const BORDER_COLOR c)
 
 void AABB::setOutlineThickness(const unsigned int t)
 {
-	this->rect.setOutlineThickness(t / 8.f);
+	this->rect.setOutlineThickness(t / static_cast<float>(Window::PIXEL_SIZE));
+}
+
+void AABB::turnIntoPoint()
+{
+	this->rect.setSize(sf::Vector2f(1,1));	// wrap outline around 's dimensions
+	this->rect.setOutlineThickness(2 / static_cast<float>(Window::PIXEL_SIZE));
 }
 
 const sf::RectangleShape& AABB::getRect() const

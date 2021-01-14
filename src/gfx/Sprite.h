@@ -16,7 +16,7 @@ class Sprite
 public:
 	static constexpr unsigned int SPRITE_SIZE{ 8 };		// base dimensions for all sprites will be multiples of 8 and atleast 8x8 px
 
-private:
+protected:
 	sf::Sprite sprite;
 
 	unsigned int spriteID{ 0 };	// used for identifying sprite texture and cropping texture out of spritesheet
@@ -24,7 +24,7 @@ private:
 public:
 	AABB bb;
 
-private:
+protected:
 	void initSprite(sf::Texture& t);	// sets sprite's texture and calls setUp();
 
 	void virtual updateCrop();	// set textureRect around sprite using spriteID and dimensions
@@ -39,7 +39,7 @@ public:
 
 	// initialized members and calls initSprite, initRect
 	Sprite(sf::Texture& t, const unsigned int id, const unsigned int w, const unsigned int h, const unsigned int scale, const int x, const int y);
-	void init(sf::Texture& t, const unsigned int id, const unsigned int w, const unsigned int h, const unsigned int scale, const int x, const int y);
+	void virtual init(sf::Texture& t, const unsigned int id, const unsigned int w, const unsigned int h, const unsigned int scale, const int x, const int y);
 
 	void virtual update();	// generic update, runs every frame, only calls updatePos();
 

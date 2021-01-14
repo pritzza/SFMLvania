@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../gfx/Sprite.h"
+#include "../gfx/AnimatedSprite.h"
 
 class TileMap;
 
@@ -14,13 +14,17 @@ private:
 	unsigned int movementCounter{};
 
 public:
-	Sprite s;
+	AnimatedSprite s;
+
+	AABB* boundingBoxes = nullptr;
 
 private:
 	void updatePos(TileMap& t);
 	void updatePhysics(const float dt);
 
 	void updateTileCollisions(TileMap& t);
+
+	void checkHorizontalCollision(TileMap& t, const int collisionPoints, const int w, const int x, const int ts);
 
 public:
 	void update(const float dt, TileMap& t);

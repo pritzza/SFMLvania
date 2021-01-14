@@ -54,7 +54,7 @@ public:
 		case TEXTURES::DEFAULT:	return addFromFile("res/sprites/chara_01.png", resourceID);
 		case TEXTURES::MONKEY:	return addFromFile("res/sprites/monkeySpriteSheet.png", resourceID);
 		case TEXTURES::TILESET:	return addFromFile("res/sprites/tiles.png", resourceID);
-		case TEXTURES::MONKEY2:	return addFromFile("res/sprites/monkeySprite.png", resourceID);
+		case TEXTURES::MONKEY2:	return addFromFile("res/sprites/simonSpriteSheet.png", resourceID);
 		}
 	}
 

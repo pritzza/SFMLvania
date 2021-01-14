@@ -39,12 +39,19 @@ EditorState::EditorState(GameData& data, const std::string& levelFileName)
 
 	p.s.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::MONKEY2)),
 		0,  // id
-		3,	// w
-		2,  // h
+		2,	// w
+		4,  // h
 		1,  // scale
-		(data.window.WINDOW_WIDTH / data.window.PIXEL_SIZE / 2), // x
-		0	// y
+		((data.window.WINDOW_WIDTH  / data.window.PIXEL_SIZE) / 2) - (p.s.getPixelWidth()), // x
+		((data.window.WINDOW_HEIGHT / data.window.PIXEL_SIZE) / 2) - (p.s.getPixelHeight()),	// y
+		3,	// key frames
+		15	// tweens
 	);
+
+	p.boundingBoxes = new AABB[(p.s.bb.getSize().x + 1) * (p.s.bb.getSize().y + 1)];
+	
+	for (int i = 0; i < (p.s.bb.getSize().x + 1) * (p.s.bb.getSize().y + 1); ++i)
+		p.boundingBoxes[i].init(1, 1, 0, 0, 1);
 }
 
 EditorState::~EditorState()
@@ -152,6 +159,11 @@ void EditorState::render()
 	tempTile.draw(w, true);
 
 	p.s.draw(w, true);
+
+	for (int i = 0; i < (p.s.bb.getSize().x + 1) * (p.s.bb.getSize().y + 1); ++i)
+	{
+		w.draw(p.boundingBoxes[i].getRect());
+	}
 
 	w.draw(t);
 

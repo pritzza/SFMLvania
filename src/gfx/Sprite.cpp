@@ -2,6 +2,8 @@
 
 #include "../util/Window.h"
 
+#include <iostream>
+
 Sprite::Sprite(sf::Texture& t, const unsigned int id, const unsigned int w, const unsigned int h, const unsigned int s, const int x, const int y)
 {
 	init(t, id, w, h, s, x, y);

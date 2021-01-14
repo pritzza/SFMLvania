@@ -7,7 +7,7 @@ class Camera;
 class Window
 {
 public:
-	static constexpr unsigned int PIXEL_SIZE{ 8 };
+	static constexpr unsigned int PIXEL_SIZE{ 4 };
 
 private:
 	sf::RenderWindow window;
