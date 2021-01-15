@@ -17,8 +17,6 @@ private:
 
 	const std::string levelFileName;
 
-	sf::Text t;
-
 public:
 	GameState(GameData& data, const std::string& levelFileName);
 	~GameState() override;

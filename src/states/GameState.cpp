@@ -8,17 +8,14 @@
 #include "../gfx/Sprite.h"
 
 #include "../levels/TileData.h"
+#include "../levels/Tile.h"
 
-GameState::GameState(GameData& data, const std::string& levelFileName) 
-	: 
+GameState::GameState(GameData& data, const std::string& levelFileName)
+	:
 	State(data),
 	levelFileName(levelFileName)
 {
 	ResourceManagers& rs = data.resourceManagers;
-
-	t.setFont(*rs.fontManager.load(FONTS::DEFAULT));
-	t.setScale(.2f, .2f);
-	t.setPosition(1, -1);
 
 	rs.textureManager.add(TEXTURES::TILESET);
 
@@ -26,17 +23,16 @@ GameState::GameState(GameData& data, const std::string& levelFileName)
 
 	data.camera.setView();
 
-	p.s.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::MONKEY2)),
+	p.s.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::SIMON)),
 		0,  // id
 		2,	// w
 		4,  // h
 		1,  // scale
-		((data.window.WINDOW_WIDTH / data.window.PIXEL_SIZE) / 2) - (p.s.getPixelWidth()), // x
-		((data.window.WINDOW_HEIGHT / data.window.PIXEL_SIZE) / 2) - (p.s.getPixelHeight()),	// y
-		3,	// key frames
-		15	// tweens
+		((l.tileMap.getWidth() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelWidth()), // x
+		((l.tileMap.getHeight() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelHeight()),	// y
+		4,	// key frames
+		8	// tweens
 	);
-
 }
 
 GameState::~GameState()
@@ -47,28 +43,32 @@ GameState::~GameState()
 
 void GameState::handleInput()
 {
-	if (data.keyBoard.isActive('e'))
+	if (data.keyBoard.e.isTapped())
 	{
-		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME,   STATE_EVENT_TYPE::REMOVE));
+		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME, STATE_EVENT_TYPE::REMOVE));
 		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::ADD, LEVEL::TEST));
 		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::CHANGE));
 	}
 
-	if (data.keyBoard.isActive('w'))
-		p.move(0, -1);
-	if (data.keyBoard.isActive('a'))
-		p.move(-1, 0);
-	if (data.keyBoard.isActive('s'))
-		p.move(0, 1);
-	if (data.keyBoard.isActive('d'))
-		p.move(1, 0);
+	if (data.keyBoard.space.isTapped())
+		p.jump();
+
+	if (data.keyBoard.w.isHeld() || data.keyBoard.w.isTapped())
+		p.move(0, -1, data.keyBoard.w.isTapped());
+	if (data.keyBoard.a.isHeld() || data.keyBoard.a.isTapped())
+		p.move(-1, 0, data.keyBoard.a.isTapped());
+	if (data.keyBoard.s.isHeld() || data.keyBoard.s.isTapped())
+		p.move(0, 1, data.keyBoard.s.isTapped());
+	if (data.keyBoard.d.isHeld() || data.keyBoard.d.isTapped())
+		p.move(1, 0, data.keyBoard.d.isTapped());
 }
 
 void GameState::update(const float dt, const int f)
 {
-	t.setString("F: " + std::to_string(f) + "\nT: " + std::to_string(dt));
-
 	p.update(dt, l.tileMap);
+
+	data.camera.setPos(p.s.getPos().x + (p.s.getPixelWidth()/2), p.s.getPos().y + (p.s.getPixelHeight() / 2));
+	data.camera.setView();
 }
 
 void GameState::render()
@@ -80,8 +80,6 @@ void GameState::render()
 	l.tileMap.draw(w);
 
 	p.s.draw(w);
-
-	w.draw(t);	//text
 
 	w.endDraw();
 }

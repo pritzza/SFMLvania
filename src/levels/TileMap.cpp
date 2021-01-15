@@ -43,15 +43,15 @@ void TileMap::load(const std::string& fileName, ResourceManager<TEXTURES, sf::Te
 			{
 				const int index = (i * width) + j / charsPerTile;
 
-				unsigned int sprite{ TILE_SPRITE_ID::MISSING_TILE };
+				unsigned int sprite{ TILE_SPRITE_ID::AIR };
 				TILE_SOLID solid{ TILE_SOLID::NOT_SOLID };
 				TILE_SPECIAL special{ TILE_SPECIAL::NONE };
 
 				try		// if something wrong with format of level data going in, replace corrupt data with default tiles
 				{
-					sprite = parser.parseSpriteID(line.at(j));
-					solid = parser.parseSolid(line.at(j + 1));
-					special = parser.parseSpecial(line.at(j + 2));
+					sprite = parser.parseSpriteID(	parser.getSpriteIndex(	line.at(j)));
+					solid = parser.parseSolid(		parser.getSolidIndex(	line.at(j + 1)));
+					special = parser.parseSpecial(	parser.getSpecialIndex(	line.at(j + 2)));
 				}
 				catch (...)
 				{
@@ -83,9 +83,9 @@ void TileMap::save(const std::string& fileName)
 				file << '\n';
 
 			file <<
-				parser.unparseSpriteID(tiles[i].getSpriteID()) <<
-				parser.unparseSolid(tiles[i].getSolid()) <<
-				parser.unparseSpecial(tiles[i].getSpecial());
+				parser.unparseSpriteID(	parser.getIndex(tiles[i].getSpriteID())) <<
+				parser.unparseSolid(	parser.getIndex(tiles[i].getSolid())) <<
+				parser.unparseSpecial(	parser.getIndex(tiles[i].getSpecial()));
 		}
 
 		file.close();

@@ -1,21 +1,26 @@
 #pragma once
 
-enum class KEY_TYPE
+enum class KEY_STATE
 {
-	TAP,	// only activates first frame of being pressed, only reset once released
-	HOLD	// active every frame that it's down
+	TAPPED,
+	HELD,
+	RELEASED,
+	SLEEP
 };
 
-struct Key
+class Key
 {
-	bool down{};	// state of physical key
-	bool active{};	// is the game considering the key pressed
-	bool used{};	// only used if TAP_KEY type
+private:
+	KEY_STATE state{ KEY_STATE::SLEEP };
 
-	const KEY_TYPE type;
+private:
+	void update(const bool down);
 
-	Key(const KEY_TYPE type)
-		:
-		type{ type }
-	{}
+public:
+	const bool isTapped() const;
+	const bool isHeld() const;
+	const bool isReleased() const;
+	const bool isSleep() const;
+
+	friend class KeyBoard;	// lets Keyboard access key.update()
 };

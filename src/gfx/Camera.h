@@ -18,7 +18,8 @@ private:
 public:
 	Camera(const unsigned int W_W, const unsigned int W_H);
 
-	void setView();	// gets the camera pointed in the right place
+	void setPos(const int x, const int y);
 
+	void setView();	// gets the camera pointed in the right place
 	const sf::View& getView() const;
 };

@@ -41,11 +41,11 @@ void Game::gameLoop()
 			data.stateMachine.currentState()->render();
 		}
 
-		delta = clock.getElapsedTime().asSeconds();
-
+		delta = clock.getElapsedTime().asSeconds();	// processing time
 		sf::sleep(sf::seconds(1.f/FPS - delta));
-
 		++frame;
+		
+		delta = clock.getElapsedTime().asSeconds();	// total gameloop time
 	}
 }
 

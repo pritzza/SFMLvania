@@ -7,7 +7,8 @@ enum class TEXTURES
 	DEFAULT,
 	MONKEY,
 	TILESET,
-	MONKEY2,
+	SIMON,
+	GOBLIN,
 };
 enum class FONTS
 {
@@ -54,7 +55,8 @@ public:
 		case TEXTURES::DEFAULT:	return addFromFile("res/sprites/chara_01.png", resourceID);
 		case TEXTURES::MONKEY:	return addFromFile("res/sprites/monkeySpriteSheet.png", resourceID);
 		case TEXTURES::TILESET:	return addFromFile("res/sprites/tiles.png", resourceID);
-		case TEXTURES::MONKEY2:	return addFromFile("res/sprites/simonSpriteSheet.png", resourceID);
+		case TEXTURES::SIMON:	return addFromFile("res/sprites/simonSpriteSheet.png", resourceID);
+		case TEXTURES::GOBLIN:	return addFromFile("res/sprites/goblinSpriteSheet.png", resourceID);
 		}
 	}
 

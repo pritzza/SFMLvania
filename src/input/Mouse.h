@@ -7,7 +7,8 @@
 enum class MOUSE
 {
 	LEFT,
-	RIGHT
+	RIGHT,
+	MIDDLE
 };
 
 class Window;
@@ -21,6 +22,7 @@ private:
 
 	MouseButton l;
 	MouseButton r;
+	MouseButton m;
 
 	int xPos{};
 	int yPos{};
@@ -40,7 +42,8 @@ public:
 		:
 		w{ w },
 		l{ FPS / 4 },	// 4 is a magic number, it just feels right
-		r{ FPS / 4 }
+		r{ FPS / 4 },
+		m{ FPS / 4 }
 	{}
 
 	void update();

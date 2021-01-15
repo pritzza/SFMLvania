@@ -9,25 +9,14 @@ class KeyBoard
 private:
 	sf::RenderWindow& window;
 
+public:
 	Key w, a, s, d, e, shift, space;
 
-private:
-	void updateKey(Key& k, sf::Keyboard::Key sfk);	// updates state of keys
-
 public:
-	KeyBoard(sf::RenderWindow& w, const unsigned int FPS)
+	KeyBoard(sf::RenderWindow& w)
 		:
-		window{ w },
-		w{ KEY_TYPE::HOLD },
-		a{ KEY_TYPE::HOLD },
-		s{ KEY_TYPE::HOLD },
-		d{ KEY_TYPE::HOLD },
-		e{ KEY_TYPE::TAP },
-		shift{ KEY_TYPE::TAP },
-		space{ KEY_TYPE::HOLD }
+		window{ w }
 	{}
 
-	void update();	// calls updateKey on every key
-
-	const bool isActive(const char c) const;
+	void update();	// calls every key's update() method
 };

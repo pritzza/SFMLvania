@@ -17,7 +17,7 @@ public:
 		:
 		window(windowName, camera, width, height),
 		mouse(window.getWindow(), FPS),
-		keyBoard(window.getWindow(), FPS),
+		keyBoard(window.getWindow()),
 		camera(width, height)
 	{}
 

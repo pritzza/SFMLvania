@@ -29,6 +29,11 @@ void Mouse::updateCounter()
 		++r.heldDuration;
 	else
 		r.heldDuration = 0;
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+		++m.heldDuration;
+	else
+		m.heldDuration = 0;
 }
 
 void Mouse::updateClicked()
@@ -42,6 +47,11 @@ void Mouse::updateClicked()
 		r.clicked = true;
 	else
 		r.clicked = false;
+
+	if (m.heldDuration == 1)
+		m.clicked = true;
+	else
+		m.clicked = false;
 }
 
 void Mouse::updateHeld()
@@ -55,6 +65,11 @@ void Mouse::updateHeld()
 		r.held = true;
 	else
 		r.held = false;
+
+	if (m.heldDuration >= m.heldThreshold || (m.heldDuration && dragDistance > dragThreshold))
+		m.held = true;
+	else
+		m.held = false;
 }
 
 void Mouse::update()
@@ -69,16 +84,20 @@ const bool Mouse::isClicked(const MOUSE button) const
 {
 	if (button == MOUSE::LEFT)
 		return l.clicked;
-  //if (button == MOUSE::RIGHT)
+	else if (button == MOUSE::RIGHT)
 		return r.clicked;
+	else
+		return m.clicked;
 }
 
 const bool Mouse::isHeld(const MOUSE button) const
 {
 	if (button == MOUSE::LEFT)
 		return l.held;
-  //if (button == MOUSE::RIGHT)
-		return r.held;
+	else if (button == MOUSE::RIGHT)
+		return r.clicked;
+	else
+		return m.clicked;
 }
 
 const sf::Vector2i Mouse::getPos() const

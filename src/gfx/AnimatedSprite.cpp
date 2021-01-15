@@ -49,7 +49,7 @@ void AnimatedSprite::updateAnimation()
 			++keyFramesCounter;
 
 			if (keyFramesCounter >= maxKeyFrames)
-				keyFramesCounter = !isIdle;
+				keyFramesCounter = 0;	// !isIdle;// toggle idle from from animation
 
 			updateCrop();
 		}
@@ -65,9 +65,15 @@ void AnimatedSprite::updateCrop()
 
 	//std::cout << direction << " " << keyFramesCounter << " " << tweensCounter << " " << isIdle << "\n";
 
+	const int directionalOffset = width * SPRITE_SIZE * (direction * maxKeyFrames);
+	const int keyFrameIndex		= width * SPRITE_SIZE * (keyFramesCounter - 0);	// - isIdle);	// toggles idle frame form animation
+	const int idleOffset		= 0;// width* SPRITE_SIZE* isIdle;	// toggle idleframe form animation
+
+	//std::cout << directionalOffset << " " << keyFrameIndex << " " << idleOffset << "\n";
+
 	this->sprite.setTextureRect(
 		sf::IntRect(
-			((width * (keyFramesCounter - 1)) * SPRITE_SIZE) + (direction * (maxKeyFrames) * width * SPRITE_SIZE) + (isIdle * width * SPRITE_SIZE),
+			keyFrameIndex + directionalOffset + idleOffset,
 			height * spriteID * SPRITE_SIZE,
 			width * SPRITE_SIZE,
 			height * SPRITE_SIZE)
@@ -82,4 +88,5 @@ void AnimatedSprite::setIdle(const bool i)
 void AnimatedSprite::setDirection(const unsigned int d)
 {
 	this->direction = d;
+	updateCrop();
 }

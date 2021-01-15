@@ -1,87 +1,85 @@
 #include "LevelParser.h"
 
-#include "../levels/TileData.h"
-
-const unsigned int LevelParser::parseSpriteID(const char id) const
+const unsigned int LevelParser::getIndex(const unsigned int s) const
 {
-	unsigned int tile{ TILE_SPRITE_ID::MISSING_TILE };
-	switch (id)
-	{
-	case ' ': tile = TILE_SPRITE_ID::AIR;		break;
-	case '#': tile = TILE_SPRITE_ID::BRICK;		break;
-	case 'o': tile = TILE_SPRITE_ID::GROUND;	break;
-	case '-': tile = TILE_SPRITE_ID::PLATFORM;	break;
-	case 'v': tile = TILE_SPRITE_ID::FACE;		break;
-	case 'b': tile = TILE_SPRITE_ID::BARREL;	break;
-	case '.': tile = TILE_SPRITE_ID::PEBBLE;	break;
-	}
+	for (int i = 0; i < TileData::NUM_IDS; ++i)
+		if (ids[i].in == s)
+			return i;
 
-	return tile;
+	return 0;
 }
 
-const TILE_SOLID LevelParser::parseSolid(const char id) const
+const unsigned int LevelParser::getIndex(const TILE_SOLID s) const
 {
-	TILE_SOLID solid{ TILE_SOLID::SOLID };
+	for (int i = 0; i < TileData::NUM_SOLIDS; ++i)
+		if (solids[i].in == s)
+			return i;
 
-	switch (id)
-	{
-	case ' ': solid = TILE_SOLID::NOT_SOLID;		break;
-	case '.': solid = TILE_SOLID::SOLID;			break;	
-	case '_': solid = TILE_SOLID::PLATFORM;			break;
-	}
-
-	return solid;
+	return 0;
 }
 
-const TILE_SPECIAL LevelParser::parseSpecial(const char id) const
+const unsigned int LevelParser::getIndex(const TILE_SPECIAL s) const
 {
-	TILE_SPECIAL special{ TILE_SPECIAL::NONE };
+	for (int i = 0; i < TileData::NUM_SPECIALS; ++i)
+		if (specials[i].in == s)
+			return i;
 
-	switch (id)
-	{
-		//case '1': special = TILE_SPECIAL::SOMETHING;
-	}
+	return 0;
+}
 
-	return special;
+const unsigned int LevelParser::getSpriteIndex(const char id) const
+{
+	for (int i = 0; i < TileData::NUM_IDS; ++i)
+		if (ids[i].out == id)
+			return i;
+
+	return 0;
+}
+
+const unsigned int LevelParser::getSolidIndex(const char id) const
+{
+	for (int i = 0; i < TileData::NUM_SOLIDS; ++i)
+		if (solids[i].out == id)
+			return i;
+
+	return 0;
+}
+
+const unsigned int LevelParser::getSpecialIndex(const char id) const
+{
+	for (int i = 0; i < TileData::NUM_SPECIALS; ++i)
+		if (specials[i].out == id)
+			return i;
+
+	return 0;
+}
+
+const unsigned int LevelParser::parseSpriteID(const unsigned int id) const
+{
+	return ids[id].in;
+}
+
+const TILE_SOLID LevelParser::parseSolid(const unsigned int id) const
+{
+	return solids[id].in;
+}
+
+const TILE_SPECIAL LevelParser::parseSpecial(const unsigned int id) const
+{
+	return specials[id].in;
 }
 
 const char LevelParser::unparseSpriteID(const unsigned int id) const
 {
-	char c{ ' ' };
-	switch (id)
-	{
-	case TILE_SPRITE_ID::AIR:		c = ' ';	break;
-	case TILE_SPRITE_ID::BRICK:		c = '#';	break;
-	case TILE_SPRITE_ID::GROUND:	c = 'o';	break;
-	case TILE_SPRITE_ID::PLATFORM:	c = '-';	break;
-	case TILE_SPRITE_ID::FACE:		c = 'v';	break;
-	case TILE_SPRITE_ID::BARREL:	c = 'b';	break;
-	case TILE_SPRITE_ID::PEBBLE:	c = '.';	break;
-	}
-
-	return c;
+	return ids[id].out;
 }
 
-const char LevelParser::unparseSolid(const TILE_SOLID solid) const
+const char LevelParser::unparseSolid(const unsigned int id) const
 {
-	char c{ ' ' };
-	switch (solid)
-	{
-	case TILE_SOLID::SOLID:		c = '.'; break;
-	case TILE_SOLID::NOT_SOLID: c = ' '; break;
-	case TILE_SOLID::PLATFORM:	c = '_'; break;
-	}
-
-	return c;
+	return solids[id].out;
 }
 
-const char LevelParser::unparseSpecial(const TILE_SPECIAL special) const
+const char LevelParser::unparseSpecial(const unsigned int id) const
 {
-	char c{ ' ' };
-	switch (special)
-	{
-	case TILE_SPECIAL::NONE: c = ' '; break;
-	}
-
-	return c;
+	return specials[id].out;
 }
