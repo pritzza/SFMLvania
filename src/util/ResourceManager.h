@@ -37,6 +37,9 @@ private:
 				resources.insert({ resourceID, r });
 				return resourceID;    // successfully adds resource to resources under resourceID
 			}
+			else
+				delete r;	// no memory leaks around here ;)
+
 			return Key::DEFAULT;    // didnt load sucessfully
 		}
 		return resourceID;	// already loaded, do nothing
@@ -86,7 +89,7 @@ public:
 
 	void remove(const Key res)
 	{
-		if (resources.find(res) != resources.end())	// cant delete a resource that isnt there
+		if (resources.size() && resources.find(res) != resources.end())	// cant delete a resource that isnt there, resources cant be empty either
 		{
 			delete resources.at(res);
 			resources.erase(res);

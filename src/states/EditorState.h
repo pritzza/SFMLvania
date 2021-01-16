@@ -3,7 +3,7 @@
 #include "State.h"
 
 #include "../levels/Level.h"
-#include "../levels/Tile.h"
+#include "../levels/LevelEditor.h"
 
 #include "../player/Player.h"
 
@@ -18,21 +18,17 @@ private:
 	Player p;
 
 	Level l;
+	LevelEditor editor;
 
 	const std::string levelFileName;
-
-	// tempTile is the tile visualization of the tile data you have selected in the editor
-	Tile tempTile;
-	unsigned int ttProperty;	// which property you're selected to iterate through
-	unsigned int ttSpriteID;
-	TILE_SOLID ttSolid;
-	TILE_SPECIAL ttSpecial;
 
 	sf::Text t;
 
 public:
 	EditorState(GameData& data, const std::string& levelFileName);
 	~EditorState() override;
+
+	void virtual init();
 
 	void virtual handleInput();	// makes events based on keyboard input
 	void virtual update(const float dt, const int f);	// updates all objects of state

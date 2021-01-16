@@ -8,8 +8,7 @@ Window::Window(const std::string& windowName, Camera& camera, const unsigned int
 	camera(camera),
 	WINDOW_WIDTH(width),
 	WINDOW_HEIGHT(height)
-{
-}
+{}
 
 void Window::update()
 {
@@ -18,10 +17,12 @@ void Window::update()
 	sf::Event event;
 
 	if (this->window.pollEvent(event))
-	{
 		if (event.type == sf::Event::Closed)
 			this->window.close();
-	}
+		else if (event.type == sf::Event::GainedFocus)
+			this->focused = true;
+		else if (event.type == sf::Event::LostFocus)
+			this->focused = false;
 }
 
 void Window::beginDraw()
@@ -39,7 +40,17 @@ void Window::endDraw()
 	this->window.display();
 }
 
-bool Window::isOpen() const
+sf::RenderWindow& Window::getWindow()
+{
+	return this->window;
+}
+
+const bool Window::isOpen() const
 {
 	return window.isOpen();
+}
+
+const bool Window::isFocused() const
+{
+	return this->focused;
 }

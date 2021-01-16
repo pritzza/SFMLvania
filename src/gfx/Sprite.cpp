@@ -51,10 +51,10 @@ void Sprite::updateCrop()
 {
 	// sprite x start in spritesheet, sprite y start in spritesheet, then x, and y end
 	// use ID to select out image in spritesheet
-	const int width = bb.getSize().x;
-	const int height = bb.getSize().y;
+	const int width = ((bb.getSize().x - 1) / SPRITE_SIZE) + SPRITE_SIZE;
+	const int height = ((bb.getSize().y - 1) / SPRITE_SIZE) + SPRITE_SIZE;
 
-	this->sprite.setTextureRect(sf::IntRect(0, width * spriteID * SPRITE_SIZE, width * SPRITE_SIZE, height * SPRITE_SIZE));
+	this->sprite.setTextureRect(sf::IntRect(0, width * spriteID, width, height));
 }
 
 void Sprite::updatePos()
@@ -71,12 +71,12 @@ void Sprite::setPos(const int x, const int y)
 
 const unsigned int Sprite::getPixelWidth() const
 {
-	return this->bb.getSize().x * bb.getScale() * Sprite::SPRITE_SIZE;
+	return this->bb.getSize().x * bb.getScale();
 }
 
 const unsigned int Sprite::getPixelHeight() const
 {
-	return this->bb.getSize().y * bb.getScale() * Sprite::SPRITE_SIZE;
+	return this->bb.getSize().y * bb.getScale();
 }
 
 const sf::Vector2f Sprite::getPos() const

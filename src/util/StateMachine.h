@@ -23,6 +23,7 @@ private:
 	STATES addingState{ STATES::VOID };
 	STATES removingState{ STATES::VOID };
 
+private:
 	void processRemoving();
 	void processChanging();
 	void processAdding();

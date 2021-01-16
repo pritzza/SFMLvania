@@ -27,7 +27,7 @@ enum class TILE_SPECIAL
 };
 
 // for editor
-enum TILE_PROPERTY
+enum class TILE_PROPERTY
 {
 	SPRITE,
 	SOLID,
@@ -45,5 +45,5 @@ public:
 	void iterateSprite(unsigned int& id);
 	void iterateSolid(TILE_SOLID& solid);
 	void iterateSpecial(TILE_SPECIAL& special);
-	void iterateProperty(unsigned int& property);
+	void iterateProperty(TILE_PROPERTY& property);
 };

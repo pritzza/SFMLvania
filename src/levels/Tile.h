@@ -19,7 +19,7 @@ enum class BORDER_COLOR;
 class Tile
 {
 public:
-	static constexpr unsigned int LENGTH{ 1 };	// tiles are going to be LENGTHxLENGTH units in dimension from spriteSheet
+	static constexpr unsigned int LENGTH{ Sprite::SPRITE_SIZE };	// tiles are going to be LENGTHxLENGTH units in dimension from spriteSheet
 	static constexpr unsigned int SCALE{ 2 };
 
 private:

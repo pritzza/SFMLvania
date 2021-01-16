@@ -18,8 +18,8 @@ void Tile::initSprite(ResourceManager<TEXTURES, sf::Texture>& tm, const int lvlw
 	this->updateRectColor();	// get the color of the bounding box set depending on solid
 
 	// position for tileSprite corresponding to its place in the tileMap, and data on tiles' and sprites' size
-	const unsigned int x{ (pos % lvlw) * this->LENGTH * this->SCALE * this->sprite.SPRITE_SIZE };
-	const unsigned int y{ (pos / lvlw) * this->LENGTH * this->SCALE * this->sprite.SPRITE_SIZE };
+	const unsigned int x{ (pos % lvlw) * this->LENGTH * this->SCALE };
+	const unsigned int y{ (pos / lvlw) * this->LENGTH * this->SCALE };
 
 	this->sprite.init(*tm.load(TEXTURES::TILESET), id, LENGTH, LENGTH, SCALE, x, y);
 }
@@ -52,8 +52,8 @@ void Tile::updateRectColor()
 void Tile::setPosition(const int x, const int y)
 {
 	this->sprite.setPos(
-		x * LENGTH * SCALE * this->sprite.SPRITE_SIZE,
-		y * LENGTH * SCALE * this->sprite.SPRITE_SIZE
+		x * LENGTH * SCALE,
+		y * LENGTH * SCALE
 	);
 }
 
@@ -74,7 +74,7 @@ void Tile::setOutlineColor(const BORDER_COLOR& c)
 
 const unsigned int Tile::getSize() const
 {
-	return Tile::LENGTH * Tile::SCALE * Sprite::SPRITE_SIZE;
+	return Tile::LENGTH * Tile::SCALE;
 }
 
 const AABB& Tile::getAABB() const

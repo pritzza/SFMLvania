@@ -4,6 +4,8 @@
 
 #include "../util/Window.h"
 
+
+#include <iostream>
 AABB::AABB(const unsigned int w, const unsigned int h, const int x, const int y, const unsigned int s)
 {
 	init(w, h, x, y, s); 
@@ -37,11 +39,14 @@ void AABB::update()
 
 const bool AABB::isColliding(const AABB& b) const
 {
-	const int& b1x = b.getPos().x;
-	const int& b1y = b.getPos().y;
+	const int b1x = b.getPos().x;
+	const int b1y = b.getPos().y;
 
-	const int& b2x = b.getPos().x + (b.getSize().x * b.getScale() * Sprite::SPRITE_SIZE);
-	const int& b2y = b.getPos().y + (b.getSize().y * b.getScale() * Sprite::SPRITE_SIZE);
+	const int w = b.getSize().x * b.getScale();
+	const int h = b.getSize().y * b.getScale();
+
+	const int b2x = b.getPos().x + w;
+	const int b2y = b.getPos().y + h;
 
 	if (this->xPos )
 	return false;
@@ -49,7 +54,7 @@ const bool AABB::isColliding(const AABB& b) const
 
 void AABB::updateSize()
 {
-	this->rect.setSize(sf::Vector2f(width * scale * Sprite::SPRITE_SIZE, height * scale * Sprite::SPRITE_SIZE));	// wrap outline around 's dimensions
+	this->rect.setSize(sf::Vector2f(width * scale, height * scale));	// wrap outline around 's dimensions
 }
 
 void AABB::updatePos()

@@ -2,8 +2,6 @@
 
 #include "../levels/TileData.h"
 
-#include <unordered_map>
-
 enum class TILE_SOLID;
 enum class TILE_SPECIAL;
 
@@ -56,12 +54,12 @@ public:
 	const unsigned int getSolidIndex(const char id) const;
 	const unsigned int getSpecialIndex(const char id) const;
 
-	// for loading tile data from file
+	// takes index and returns 'in' of value of corresponding tile
 	const unsigned int parseSpriteID(const unsigned int id) const;
 	const TILE_SOLID parseSolid(const unsigned int id) const;
 	const TILE_SPECIAL parseSpecial(const unsigned int id) const;
 
-	// for saving tile data to file
+	// takes index and returns 'out' of value of corresponding tile
 	const char unparseSpriteID(const unsigned int id) const;
 	const char unparseSolid(const unsigned int id) const;
 	const char unparseSpecial(const unsigned int id) const;

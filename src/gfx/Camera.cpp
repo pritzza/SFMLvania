@@ -6,8 +6,9 @@ Camera::Camera(const unsigned int W_W, const unsigned int W_H)
 	:
 	WIN_W(W_W),
 	WIN_H(W_H)
-{ 
-
+{
+	setPos(WIN_W / Window::PIXEL_SIZE / 2, WIN_H / Window::PIXEL_SIZE / 2);
+	setView();
 }
 
 void Camera::setPos(const int x, const int y)

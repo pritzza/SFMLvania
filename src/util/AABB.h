@@ -43,7 +43,7 @@ public:
 	void setColor(const BORDER_COLOR c);
 	void setOutlineThickness(const unsigned int t);
 
-	void turnIntoPoint();
+	void turnIntoPoint();	// for debugging, turns bounding boxes into tiny boxes that can be used to help visual/represent collision points or something
 
 	// setters and getters
 	const sf::RectangleShape& getRect() const;

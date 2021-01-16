@@ -9,6 +9,9 @@ class EventHandler
 private:
 	std::vector<Event*> events;
 
+	int added{};
+	int removed{};
+
 public:
 	~EventHandler();
 

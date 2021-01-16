@@ -20,7 +20,7 @@ void TileData::iterateSpecial(TILE_SPECIAL& special)
 	special= p.parseSpecial((p.getIndex(special) + 1) % NUM_SPECIALS);
 }
 
-void TileData::iterateProperty(unsigned int& property)
+void TileData::iterateProperty(TILE_PROPERTY& property)
 {
 	switch (property)
 	{

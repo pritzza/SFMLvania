@@ -2,19 +2,20 @@
 
 #include "../util/GameData.h"
 
-#include "../events/TileMapEvent.h"
 #include "../events/StateEvent.h"
 
-#include "../gfx/Sprite.h"
-
-#include "../levels/TileData.h"
 #include "../levels/Tile.h"
 
 GameState::GameState(GameData& data, const std::string& levelFileName)
 	:
 	State(data),
 	levelFileName(levelFileName)
+{}
+
+void GameState::init()
 {
+	this->initialized = true;
+
 	ResourceManagers& rs = data.resourceManagers;
 
 	rs.textureManager.add(TEXTURES::TILESET);
@@ -25,8 +26,8 @@ GameState::GameState(GameData& data, const std::string& levelFileName)
 
 	p.s.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::SIMON)),
 		0,  // id
-		2,	// w
-		4,  // h
+		16,	// w
+		32,  // h
 		1,  // scale
 		((l.tileMap.getWidth() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelWidth()), // x
 		((l.tileMap.getHeight() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelHeight()),	// y
@@ -37,8 +38,8 @@ GameState::GameState(GameData& data, const std::string& levelFileName)
 
 GameState::~GameState()
 {
-	// todo
-	//data.resourceManagers.textureManager.remove(TEXTURES::TILESET);
+	data.resourceManagers.textureManager.remove(TEXTURES::TILESET);
+	data.resourceManagers.textureManager.remove(TEXTURES::SIMON);
 }
 
 void GameState::handleInput()

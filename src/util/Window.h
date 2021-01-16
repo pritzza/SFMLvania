@@ -14,6 +14,8 @@ private:
 
 	Camera& camera;
 
+	bool focused{ true };
+
 public:
 	const unsigned int WINDOW_WIDTH;
 	const unsigned int WINDOW_HEIGHT;
@@ -27,7 +29,8 @@ public:
 	void draw(const sf::Drawable& drawable);
 	void endDraw();
 
-	sf::RenderWindow& getWindow() { return this->window; }
+	sf::RenderWindow& getWindow();
 
-	bool isOpen() const;
+	const bool isOpen() const;
+	const bool isFocused() const;
 };

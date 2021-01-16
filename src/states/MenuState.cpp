@@ -10,8 +10,11 @@
 MenuState::MenuState(GameData& data)
 	:
 	State(data)
-{
+{}
 
+void MenuState::init()
+{
+	this->initialized = true;
 }
 
 MenuState::~MenuState()

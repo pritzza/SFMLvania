@@ -1,6 +1,5 @@
 #include "Game.h"
 
-#include "util/GameData.h"
 #include "events/StateEvent.h"
 
 Game::Game(const std::string& windowName, const unsigned int width, const unsigned int height, const unsigned int fps)
@@ -31,14 +30,21 @@ void Game::gameLoop()
 		data.stateMachine.processStateChange();
 
 		data.window.update();	// checks if window has been closed
-		data.mouse.update();
-		data.keyBoard.update();
 
-		if (data.stateMachine.currentState() != nullptr)
+		if (data.window.isFocused())
 		{
-			data.stateMachine.currentState()->handleInput();
-			data.stateMachine.currentState()->update(delta, frame);
-			data.stateMachine.currentState()->render();
+			data.mouse.update();
+			data.keyBoard.update();
+
+			if (data.stateMachine.currentState() != nullptr)
+			{
+				if (!data.stateMachine.currentState()->isInit())	// if state hasnt been initialized, initialize it
+					data.stateMachine.currentState()->init();
+
+				data.stateMachine.currentState()->handleInput();
+				data.stateMachine.currentState()->update(delta, frame);
+				data.stateMachine.currentState()->render();
+			}
 		}
 
 		delta = clock.getElapsedTime().asSeconds();	// processing time
