@@ -18,7 +18,10 @@ private:
 public:
 	Camera(const unsigned int W_W, const unsigned int W_H);
 
-	void setPos(const int x, const int y);
+	void move(const int x, const int y);	// relative
+	void setPos(const int x, const int y);	// absolute
+
+	const sf::Vector2i getPos() const;
 
 	void setView();	// gets the camera pointed in the right place
 	const sf::View& getView() const;

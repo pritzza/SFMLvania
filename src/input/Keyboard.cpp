@@ -9,4 +9,9 @@ void KeyBoard::update()
 	e.update(sf::Keyboard::isKeyPressed(sf::Keyboard::E));
 	shift.update(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift));
 	space.update(sf::Keyboard::isKeyPressed(sf::Keyboard::Space));
+
+	up.update(sf::Keyboard::isKeyPressed(sf::Keyboard::Up));
+	down.update(sf::Keyboard::isKeyPressed(sf::Keyboard::Down));
+	left.update(sf::Keyboard::isKeyPressed(sf::Keyboard::Left));
+	right.update(sf::Keyboard::isKeyPressed(sf::Keyboard::Right));
 }

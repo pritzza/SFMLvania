@@ -60,18 +60,12 @@ void AnimatedSprite::updateCrop()
 {
 	// sprite x start in spritesheet, sprite y start in spritesheet, then x, and y end
 	// use ID to select out image in spritesheet
-	const int width = (((bb.getSize().x - 1) / SPRITE_SIZE) * SPRITE_SIZE) ;
-	const int height = (((bb.getSize().y - 1) / SPRITE_SIZE) * SPRITE_SIZE) ;
+	const int width = (((bb.getSize().x - 1) / SPRITE_SIZE) * SPRITE_SIZE);
+	const int height = (((bb.getSize().y - 1) / SPRITE_SIZE) * SPRITE_SIZE);
 
-	//std::cout << width << " " << height << '\n';
-
-	//std::cout << direction << " " << keyFramesCounter << " " << tweensCounter << " " << isIdle << "\n";
-
-	const int directionalOffset = width * (direction * maxKeyFrames);
-	const int keyFrameIndex		= width * (keyFramesCounter - 0);	// - isIdle);	// toggles idle frame form animation
-	const int idleOffset		= 0;// width * isIdle;	// toggle idleframe form animation
-
-	//std::cout << directionalOffset << " " << keyFrameIndex << " " << idleOffset << "\n";
+	const int directionalOffset = (width + 1) * (direction * maxKeyFrames);
+	const int keyFrameIndex = (width + 1) * (keyFramesCounter - 0);	// - isIdle);	// toggles idle frame form animation
+	const int idleOffset = 0;// width * isIdle;	// toggle idleframe form animation
 
 	this->sprite.setTextureRect(
 		sf::IntRect(
@@ -81,7 +75,6 @@ void AnimatedSprite::updateCrop()
 			height)
 	);
 }
-
 void AnimatedSprite::setIdle(const bool i)
 {
 	this->isIdle = i;

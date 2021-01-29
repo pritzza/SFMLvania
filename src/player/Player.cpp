@@ -6,7 +6,15 @@
 
 #include "../util/Window.h"
 
-#include <iostream>
+void Player::init(sf::Texture& t, const unsigned int id, const unsigned int w, const unsigned int h, const unsigned int scale, const int x, const int y, const int mkf, const int mtf)
+{
+	s.init(t, id, w, h, scale, x, y, mkf, mtf);
+
+	boundingBoxes = new AABB[(s.bb.getSize().x + 1) * (s.bb.getSize().y + 1)];
+
+	for (int i = 0; i < (s.bb.getSize().x + 1) * (s.bb.getSize().y + 1); ++i)
+		boundingBoxes[i].init(1, 1, 0, 0, 1);
+}
 
 void Player::update(const float dt, TileMap& t)
 {
@@ -21,47 +29,22 @@ void Player::update(const float dt, TileMap& t)
 
 void Player::updatePhysics(const float dt)
 {
-	//yVel += 50 * dt;
-	//
-	//xVel *= 100 * dt;
-	//
-	//if (isGrounded)
-		//xVel += -xVel/2.f;
+	yAcc += FORCE_OF_GRAVITY;
 
+	//xAcc *= .98f;
 
-	////std::cout << "Jumping: " << isJumping << " Grounded: " << isGrounded << " Counter: " << jumpCounter << "/" << jumpDuration << '\n';
+	xVel = xAcc;
+	yVel = yAcc;
 
-	//if (isJumping)
-	//{
-	//	++jumpCounter;
+	//if (xVel > MAX_X_VEL)
+	//	xVel = MAX_X_VEL;
+	//else if (xVel < -MAX_X_VEL)
+	//	xVel = -MAX_X_VEL;
 	//
-	//	if (jumpCounter < jumpDuration)
-	//	{
-	//		yVel -= jumpForce / jumpCounter;
-	//		std::cout << static_cast<int>((jumpForce / jumpCounter) - FORCE_OF_GRAVITY) << " = " << jumpForce << " / " << jumpCounter << '\n';
-	//	}
-	//	else
-	//	{
-	//		jumpCounter = 0;
-	//		isJumping = false;
-	//	}
-	//}
-	//
-	//yVel += FORCE_OF_GRAVITY;
-	//
-	//// decceleration
-	////yVel *= 99.f/100.f;
-	////xVel *= 99.f/100.f;
-	//
-	if (xVel > MAX_X_VEL)
-		xVel = MAX_X_VEL;
-	else if (xVel < -MAX_X_VEL)
-		xVel = -MAX_X_VEL;
-
-	if (yVel > MAX_Y_VEL)
-		yVel = MAX_Y_VEL;
-	if (yVel < -MAX_Y_VEL)
-		yVel = -MAX_Y_VEL;
+	//if (yVel > MAX_Y_VEL)
+	//	yVel = MAX_Y_VEL;
+	//if (yVel < -MAX_Y_VEL)
+	//	yVel = -MAX_Y_VEL;
 }
 
 void Player::checkHorizontalCollision(TileMap& t, const int collisionPoints, const int w, const int x, const int ts)
@@ -101,14 +84,15 @@ void Player::updateTileCollisions(TileMap& t)
 			sf::Vector2i nextTile(next.x + (i % (d.x + 1) * ts) - ((i % (d.x + 1)) / d.x), next.y + (i / (d.x + 1) * ts) - i / (((d.x + 1) * (d.y + 1)) - (d.x + 1)));
 
 			// debug collision point boxes
-			//boundingBoxes[i].turnIntoPoint();
-			//boundingBoxes[i].setPos(nextTile.x, nextTile.y);
+			boundingBoxes[i].turnIntoPoint();
+			boundingBoxes[i].setPos(nextTile.x, nextTile.y);
 
 			if (t.getTile(nextTile.x, currentTile.y).getSolid() == TILE_SOLID::SOLID)	// if horizontal collision
 			{
 				if (xVel > 0)		s.setPos((((pos.x + ts - 1) / ts) * ts), pos.y);
 				else if (xVel < 0)	s.setPos((((pos.x + 0 - 0) / ts) * ts), pos.y);
 				xVel = 0;
+				xAcc = 0;
 			}
 		}
 
@@ -138,6 +122,7 @@ void Player::updateTileCollisions(TileMap& t)
 					isJumping = false;	// hit your head in the ceiling
 				}
 				yVel = 0;
+				yAcc = 0;
 			}
 
 			if (i > ((d.x + 1) * (d.y + 1)) - (d.x + 2)) // platform collision	// only check collision point at the bottom of the bounding box (what you're standing on)
@@ -146,8 +131,8 @@ void Player::updateTileCollisions(TileMap& t)
 					{
 						s.setPos(pos.x, (((pos.y + ts - 1) / ts) * ts));
 						yVel = 0;
+						yAcc = 0;
 						resetJump();
-
 					}
 		}
 	}
@@ -159,20 +144,12 @@ void Player::updatePos(TileMap& t)
 
 	if (!xVel && !yVel)
 		s.setIdle(true);
-
-	xVel = 0;
-	yVel = 0;
 }
 
 void Player::move(const int x, const int y, const bool directionTapped)
 {
-	++movementCounter;
-
-	if (movementCounter % movementRate == 0)
-	{
-		this->xVel += x * speed;
-		this->yVel += y * speed;
-	}
+	this->xAcc = x;
+	this->yAcc += y;
 
 	s.setIdle(false);
 
@@ -196,10 +173,15 @@ void Player::resetJump()
 {
 	isGrounded = true;	// touched the ground
 	isJumping = false;
-	jumpCounter = 0;
+	//jumpCounter = 0;
 }
 
-const sf::Vector2i Player::getVel() const
+const sf::Vector2f Player::getVel() const
 {
-	return sf::Vector2i(xVel, yVel);
+	return sf::Vector2f(xVel, yVel);
+}
+
+const sf::Vector2f Player::getAcc() const
+{
+	return sf::Vector2f(xAcc, yAcc);
 }

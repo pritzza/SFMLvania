@@ -16,8 +16,6 @@
 TileMap::~TileMap()
 {
 	delete[] tiles;
-
-	std::cout << "deleted tileMap" << '\n';
 }
 
 void TileMap::load(const std::string& fileName, ResourceManager<TEXTURES, sf::Texture>& tm)
@@ -33,7 +31,6 @@ void TileMap::load(const std::string& fileName, ResourceManager<TEXTURES, sf::Te
 		this->height = std::stoi(line);
 
 		this->tiles = new Tile[width * height];
-		std::cout << "allocated tileMap" << '\n';
 
 		LevelParser parser;
 

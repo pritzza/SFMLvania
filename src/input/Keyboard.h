@@ -10,7 +10,7 @@ private:
 	sf::RenderWindow& window;
 
 public:
-	Key w, a, s, d, e, shift, space;
+	Key w, a, s, d, e, shift, space, up, down, left, right;
 
 public:
 	KeyBoard(sf::RenderWindow& w)

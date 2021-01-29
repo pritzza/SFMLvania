@@ -18,16 +18,16 @@ void GameState::init()
 
 	ResourceManagers& rs = data.resourceManagers;
 
-	rs.textureManager.add(TEXTURES::TILESET);
+	//rs.textureManager.add(TEXTURES::TILESET);
 
 	l.tileMap.load(levelFileName, rs.textureManager);
 
 	data.camera.setView();
 
-	p.s.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::SIMON)),
+	p.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::SIMON)),
 		0,  // id
 		16,	// w
-		32,  // h
+		33,  // h
 		1,  // scale
 		((l.tileMap.getWidth() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelWidth()), // x
 		((l.tileMap.getHeight() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelHeight()),	// y

@@ -29,21 +29,16 @@ void EditorState::init()
 	data.camera.setPos(data.window.WINDOW_WIDTH / Window::PIXEL_SIZE / 2, data.window.WINDOW_HEIGHT / Window::PIXEL_SIZE / 2);
 	data.camera.setView();
 
-	p.s.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::SIMON)),
+	p.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::SIMON)),
 		0,  // id
 		16,	// w
-		32,  // h
+		33,  // h
 		1,  // scale
 		((l.tileMap.getWidth() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelWidth()), // x
 		((l.tileMap.getHeight() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelHeight()),	// y
 		4,	// key frames
 		8	// tweens
 	);
-
-	p.boundingBoxes = new AABB[(p.s.bb.getSize().x + 1) * (p.s.bb.getSize().y + 1)];
-
-	for (int i = 0; i < (p.s.bb.getSize().x + 1) * (p.s.bb.getSize().y + 1); ++i)
-		p.boundingBoxes[i].init(1, 1, 0, 0, 1);
 }
 
 EditorState::~EditorState()
@@ -57,8 +52,8 @@ EditorState::~EditorState()
 void EditorState::handleInput()
 {
 	// editor inputs
-	const int mx = data.mouse.getPos().x;
-	const int my = data.mouse.getPos().y;
+	const int mx = data.mouse.getPos().x + (data.camera.getPos().x * data.window.PIXEL_SIZE) - data.window.WINDOW_WIDTH/2;
+	const int my = data.mouse.getPos().y + (data.camera.getPos().y * data.window.PIXEL_SIZE) - data.window.WINDOW_HEIGHT/2;
 	TileMap& tm = l.tileMap;
 	const int ts = Tile::LENGTH * Tile::SCALE * data.window.PIXEL_SIZE;	// tile size
 
@@ -91,6 +86,15 @@ void EditorState::handleInput()
 	if (data.keyBoard.d.isHeld() || data.keyBoard.d.isTapped())
 		p.move(1, 0, data.keyBoard.d.isTapped());
 
+	// camera movement
+	if (data.keyBoard.up.isHeld() || data.keyBoard.up.isTapped())
+		data.camera.move(0, -1);
+	if (data.keyBoard.left.isHeld() || data.keyBoard.left.isTapped())
+		data.camera.move(-1, 0);
+	if (data.keyBoard.down.isHeld() || data.keyBoard.down.isTapped())
+		data.camera.move(0, 1);
+	if (data.keyBoard.right.isHeld() || data.keyBoard.right.isTapped())
+		data.camera.move(1, 0);
 
 	// toggle state
 	if (data.keyBoard.e.isTapped())	
@@ -104,8 +108,8 @@ void EditorState::handleInput()
 void EditorState::update(const float dt, const int f)
 {
 	const int ts = Tile::LENGTH * Tile::SCALE * data.window.PIXEL_SIZE;	// tile size
-	const int x = data.mouse.getPos().x / ts;
-	const int y = data.mouse.getPos().y / ts;
+	const int x = (data.mouse.getPos().x + (data.camera.getPos().x * data.window.PIXEL_SIZE) - data.window.WINDOW_WIDTH  / 2) / ts;
+	const int y = (data.mouse.getPos().y + (data.camera.getPos().y * data.window.PIXEL_SIZE) - data.window.WINDOW_HEIGHT / 2) / ts;
 
 	editor.update(x, y);
 
@@ -114,13 +118,16 @@ void EditorState::update(const float dt, const int f)
 
 	p.update(dt, l.tileMap);
 
+	t.setPosition(data.camera.getPos().x - (data.window.WINDOW_WIDTH / (2 * data.window.PIXEL_SIZE)), data.camera.getPos().y - (data.window.WINDOW_HEIGHT / (2 * data.window.PIXEL_SIZE)));
 	t.setString(
 		"F: " + std::to_string(f) +
 		"\nFPS : " + std::to_string(1.f / dt) +
-		"\nx: " + std::to_string(static_cast<int>(p.s.getPos().x)) + //" + " + std::to_string(p.getVel().x) +
-		"\ny: " + std::to_string(static_cast<int>(p.s.getPos().y)) + //" + " + std::to_string(p.getVel().y) +
+		"\nx: " + std::to_string(static_cast<int>(p.s.getPos().x)) + " + " + std::to_string(p.getVel().x) + " + " + std::to_string(p.getAcc().x) +
+		"\ny: " + std::to_string(static_cast<int>(p.s.getPos().y)) + " + " + std::to_string(p.getVel().y) + " + " + std::to_string(p.getAcc().y) +
 		"\n(" + std::to_string(x) + ", " + std::to_string(y) + ")"
 	);
+
+	data.camera.setView();
 }
 
 void EditorState::render()

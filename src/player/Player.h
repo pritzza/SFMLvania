@@ -7,23 +7,19 @@ class TileMap;
 class Player
 {
 private:
-	int xVel{};
-	int yVel{};
+	float xVel{};
+	float yVel{};
 
-	unsigned int movementCounter{};
-	unsigned int movementRate{ 1 };
-	const int speed{ 1 };
+	float xAcc{};
+	float yAcc{};
 
-	const int FORCE_OF_GRAVITY{ 2 }; const int MAX_X_VEL{ 1 };
-	const int MAX_Y_VEL{ 2 };
+	const float FORCE_OF_GRAVITY{ .2f };
+
+	const float MAX_X_VEL{ 1.f };
+	const float MAX_Y_VEL{ 2.5f };
 
 	bool isGrounded{};
 	bool isJumping{};
-
-	const unsigned int jumpForce{ 50 };	// the smaller the number, the larger the force
-
-	const unsigned int jumpDuration{ 50 };
-	unsigned int jumpCounter{};
 
 public:
 	AnimatedSprite s;
@@ -41,11 +37,14 @@ private:
 	void resetJump();
 
 public:
+	void init(sf::Texture& t, const unsigned int id, const unsigned int w, const unsigned int h, const unsigned int scale, const int x, const int y, const int mkf, const int mtf);
+
 	void update(const float dt, TileMap& t);
 
 	void jump();
 
 	void move(const int x, const int y, const bool directionTapped);
 
-	const sf::Vector2i getVel() const;
+	const sf::Vector2f getVel() const;
+	const sf::Vector2f getAcc() const;
 };

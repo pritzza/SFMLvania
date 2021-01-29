@@ -17,6 +17,12 @@ void Camera::setPos(const int x, const int y)
 	this->yPos = y;
 }
 
+void Camera::move(const int x, const int y)
+{
+	this->xPos += x;
+	this->yPos += y;
+}
+
 void Camera::setView()
 {
 	this->view.setCenter(xPos, yPos);
@@ -27,4 +33,9 @@ void Camera::setView()
 const sf::View& Camera::getView() const
 {
 	return this->view;
+}
+
+const sf::Vector2i Camera::getPos() const
+{
+	return sf::Vector2i(this->xPos, this->yPos);
 }

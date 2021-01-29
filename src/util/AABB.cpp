@@ -4,8 +4,6 @@
 
 #include "../util/Window.h"
 
-
-#include <iostream>
 AABB::AABB(const unsigned int w, const unsigned int h, const int x, const int y, const unsigned int s)
 {
 	init(w, h, x, y, s); 
