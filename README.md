@@ -16,7 +16,17 @@ Player (only partially implemented)
 Game state machine,
 Resource manager, and
 Event system
-  
+
+## Building for Window's Visual Studio
+[Download SFML](https://www.sfml-dev.org/download/sfml/2.5.1/) and follow [this tutorial](https://www.youtube.com/watch?v=axIgxBQVBg0) to set up VS project with SFML. Then download repository, placing ``src`` and ``res`` in the ``source\repos\(project name)`` folder.
+# Controls
+  - WASD and Space for player movement
+  ### Editor Controls:
+  - Arrow keys for camera movement in editor state
+  - E to toggle between states
+  - LShift to cycle through tile property types
+  - LClick to place tiles, MClick to copy selected tile, RClick through tile properties
+
 ## Todo
   - Fix memory leak when changing gamestates
   - Expand player class into complete entity component system
