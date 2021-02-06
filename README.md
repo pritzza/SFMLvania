@@ -2,6 +2,7 @@
 SFMLvania is the creative title I came up with for the Castlevania inspired game I wanted to make using SFML.
 
 ## Current Features
+
 Built in level editor
   - Save and loads level data to and from file
   - Customizeable tiles
@@ -13,13 +14,15 @@ Player (only partially implemented)
   - Animated
   - Camera
   
-Game state machine,
-Resource manager, and
-Event system
+Game engine stuff
+  - Game state machine
+  - Resource manager
+  - Event system
 
 ## Building for Window's Visual Studio
-[Download SFML](https://www.sfml-dev.org/download/sfml/2.5.1/) and follow [this tutorial](https://www.youtube.com/watch?v=axIgxBQVBg0) to set up VS project with SFML. Then download repository, placing ``src`` and ``res`` in the ``source\repos\(project name)`` folder.
-# Controls
+[Download SFML](https://www.sfml-dev.org/download/sfml/2.5.1/) and follow [this tutorial](https://www.youtube.com/watch?v=axIgxBQVBg0) to set up VS project with SFML. Then download this repository, placing ``src`` and ``res`` into the new VS project's directory (default path: ``source\repos\(project name)``).
+
+## Controls
   - WASD and Space for player movement
   ### Editor Controls:
   - Arrow keys for camera movement in editor state
