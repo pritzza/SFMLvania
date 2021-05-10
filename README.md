@@ -31,7 +31,7 @@ Game engine stuff
   - LClick to place tiles, MClick to copy selected tile, RClick through tile properties
 
 ## Todo
-  - Fix memory leak when changing gamestates
+  - ~~Fix memory leak when changing gamestates~~
   - Expand player class into complete entity component system
   - Fix horizontal player movement
   - Refactor and generify tile collision
