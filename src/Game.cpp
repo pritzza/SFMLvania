@@ -7,13 +7,15 @@ Game::Game(const std::string& windowName, const unsigned int width, const unsign
 	data(windowName, width, height, fps),
 	FPS(fps)
 {
-	data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::ADD, LEVEL::TEST));	// add starting state
-	data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::CHANGE));		// change to it
+	EventHandler& eh{ data.eventHandler };
+	eh.addEvent(std::make_shared<StateEvent>(data, STATES::EDITOR, STATE_EVENT_TYPE::ADD, LEVEL::CHAMBER));	// add starting state
+	eh.addEvent(std::make_shared<StateEvent>(data, STATES::EDITOR, STATE_EVENT_TYPE::CHANGE));		// change to it
 
 	// load default resources
-	data.resourceManagers.textureManager.add(TEXTURES::DEFAULT);
-	data.resourceManagers.fontManager.add(FONTS::DEFAULT);
-	//data.resourceManagers.soundManager.add(SOUNDS::DEFAULT);
+	ResourceManagers& rs{ data.resourceManagers };
+	rs.textureManager.add(TEXTURES::DEFAULT);
+	rs.fontManager.add(FONTS::DEFAULT);
+	//rs.soundManager.add(SOUNDS::DEFAULT);
 }
 
 void Game::gameLoop()
@@ -21,29 +23,31 @@ void Game::gameLoop()
 	unsigned int frame{};
 	float delta = 0.f;
 
+	GameData& d{ data };
+
 	while (isRunning())
 	{
 		clock.restart();
 
-		data.eventHandler.processEvents();
+		d.eventHandler.processEvents();
 
-		data.stateMachine.processStateChange();
+		d.stateMachine.processStateChange();
 
-		data.window.update();	// checks if window has been closed
+		d.window.update();	// checks if window has been closed
 
-		if (data.window.isFocused())
+		if (d.window.isFocused())
 		{
-			data.mouse.update();
-			data.keyBoard.update();
+			d.mouse.update();
+			d.keyBoard.update();
 
-			if (data.stateMachine.currentState() != nullptr)
+			if (d.stateMachine.currentState() != nullptr)
 			{
-				if (!data.stateMachine.currentState()->isInit())	// if state hasnt been initialized, initialize it
-					data.stateMachine.currentState()->init();
+				if (!d.stateMachine.currentState()->isInit())	// if state hasnt been initialized, initialize it
+					d.stateMachine.currentState()->init();
 
-				data.stateMachine.currentState()->handleInput();
-				data.stateMachine.currentState()->update(delta, frame);
-				data.stateMachine.currentState()->render();
+				d.stateMachine.currentState()->handleInput();
+				d.stateMachine.currentState()->update(delta, frame);
+				d.stateMachine.currentState()->render();
 			}
 		}
 

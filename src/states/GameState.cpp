@@ -6,6 +6,8 @@
 
 #include "../levels/Tile.h"
 
+#include <iostream>
+
 GameState::GameState(GameData& data, const std::string& levelFileName)
 	:
 	State(data),
@@ -18,7 +20,7 @@ void GameState::init()
 
 	ResourceManagers& rs = data.resourceManagers;
 
-	//rs.textureManager.add(TEXTURES::TILESET);
+	rs.textureManager.add(TEXTURES::TILESET);
 
 	l.tileMap.load(levelFileName, rs.textureManager);
 
@@ -27,7 +29,7 @@ void GameState::init()
 	p.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::SIMON)),
 		0,  // id
 		16,	// w
-		33,  // h
+		32,  // h
 		1,  // scale
 		((l.tileMap.getWidth() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelWidth()), // x
 		((l.tileMap.getHeight() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelHeight()),	// y
@@ -44,15 +46,11 @@ GameState::~GameState()
 
 void GameState::handleInput()
 {
-	if (data.keyBoard.e.isTapped())
-	{
-		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME, STATE_EVENT_TYPE::REMOVE));
-		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::ADD, LEVEL::TEST));
-		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::CHANGE));
-	}
-
-	if (data.keyBoard.space.isTapped())
+	// player movement
+	if (data.keyBoard.space.isHeld() || data.keyBoard.space.isTapped())
 		p.jump();
+	else if (data.keyBoard.space.isReleased())
+		p.stopJump();
 
 	if (data.keyBoard.w.isHeld() || data.keyBoard.w.isTapped())
 		p.move(0, -1, data.keyBoard.w.isTapped());
@@ -62,6 +60,13 @@ void GameState::handleInput()
 		p.move(0, 1, data.keyBoard.s.isTapped());
 	if (data.keyBoard.d.isHeld() || data.keyBoard.d.isTapped())
 		p.move(1, 0, data.keyBoard.d.isTapped());
+
+	if (data.keyBoard.e.isTapped())
+	{
+		data.eventHandler.addEvent(std::make_shared<StateEvent>(data, STATES::GAME, STATE_EVENT_TYPE::REMOVE));
+		data.eventHandler.addEvent(std::make_shared<StateEvent>(data, STATES::EDITOR, STATE_EVENT_TYPE::ADD, LEVEL::CHAMBER));
+		data.eventHandler.addEvent(std::make_shared<StateEvent>(data, STATES::EDITOR, STATE_EVENT_TYPE::CHANGE));
+	}
 }
 
 void GameState::update(const float dt, const int f)

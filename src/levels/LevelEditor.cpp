@@ -44,7 +44,7 @@ Tile& LevelEditor::getTile()
 
 void LevelEditor::placeTile(EventHandler& eh, TileMap& tm, const int mx, const int my)
 {
-	eh.addEvent(new TileMapEvent(tm, mx + (my * tm.getWidth()), this->spriteID, this->solid, this->special));
+	eh.addEvent(std::make_shared<TileMapEvent>(tm, mx + (my * tm.getWidth()), this->spriteID, this->solid, this->special));
 }
 
 void LevelEditor::updateCursorTile()

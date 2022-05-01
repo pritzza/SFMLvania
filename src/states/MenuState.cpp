@@ -5,8 +5,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <iostream>
-
 MenuState::MenuState(GameData& data)
 	:
 	State(data)

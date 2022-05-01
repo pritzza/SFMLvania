@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
 class Event;
@@ -7,16 +8,14 @@ class Event;
 class EventHandler
 {
 private:
-	std::vector<Event*> events;
+	std::vector<std::shared_ptr<Event>> events;
 
 	int added{};
 	int removed{};
 
 public:
-	~EventHandler();
-
 	void processEvents();
-	void addEvent(Event* e);
+	void addEvent(std::shared_ptr<Event> e);
 
 private:
 	void removeEvent();	// removes back element

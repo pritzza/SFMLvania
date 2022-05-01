@@ -2,11 +2,6 @@
 
 #include "../events/Event.h"
 
-EventHandler::~EventHandler()
-{
-	this->removeAll();
-}
-
 void EventHandler::processEvents()
 {
 	for (auto& e : events)
@@ -15,14 +10,13 @@ void EventHandler::processEvents()
 	removeAll();
 }
 
-void EventHandler::addEvent(Event* e)
+void EventHandler::addEvent(std::shared_ptr<Event> e)
 {
 	events.push_back(e);
 }
 
 void EventHandler::removeEvent()
 {
-	delete events.back();
 	events.pop_back();
 }
 

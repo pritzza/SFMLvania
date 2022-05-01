@@ -26,19 +26,19 @@ void EditorState::init()
 	l.tileMap.load(levelFileName, rs.textureManager);
 	editor.init(rs.textureManager);
 
-	data.camera.setPos(data.window.WINDOW_WIDTH / Window::PIXEL_SIZE / 2, data.window.WINDOW_HEIGHT / Window::PIXEL_SIZE / 2);
-	data.camera.setView();
-
 	p.init(*rs.textureManager.load(rs.textureManager.add(TEXTURES::SIMON)),
 		0,  // id
 		16,	// w
-		33,  // h
+		32,  // h
 		1,  // scale
 		((l.tileMap.getWidth() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelWidth()), // x
 		((l.tileMap.getHeight() * l.tileMap.getTile(0).getSize()) / 2) - (p.s.getPixelHeight()),	// y
 		4,	// key frames
 		8	// tweens
 	);
+
+	data.camera.setPos(p.s.getPos().x , p.s.getPos().y);
+	data.camera.setView();
 }
 
 EditorState::~EditorState()
@@ -59,23 +59,25 @@ void EditorState::handleInput()
 
 	if (mx > 0 && mx < ts * tm.getWidth() && my > 0 && my < ts * tm.getHeight())	// if mouse is in bounds of tileMap
 	{
-		if (data.mouse.isClicked(MOUSE::LEFT) || data.mouse.isHeld(MOUSE::LEFT))	// put a tile down where the mouse is with the same properties of the tempTile
+		if (data.mouse.left.isTapped() || data.mouse.left.isHeld())	// put a tile down where the mouse is with the same properties of the tempTile
 			editor.placeTile(data.eventHandler, l.tileMap, mx / ts, my / ts);
 
-		if (data.mouse.isClicked(MOUSE::MIDDLE))	// copy the properties of the tile you're mouse is over to the tempTile
+		if (data.mouse.middle.isTapped())	// copy the properties of the tile you're mouse is over to the tempTile
 			editor.copyTile(tm.getTile(mx / ts + ((my / ts) * tm.getWidth())));
 	}
 
 	if (data.keyBoard.shift.isTapped())	// iterate over the property you have selected for the tempTile
 		editor.iterateProperties();
 
-	if (data.mouse.isClicked(MOUSE::RIGHT))	// iterate through the elements of the current property
+	if (data.mouse.right.isTapped())	// iterate through the elements of the current property
 		editor.iterateElements();
 
 
 	// player movement
-	if (data.keyBoard.space.isTapped())
+	if (data.keyBoard.space.isHeld() || data.keyBoard.space.isTapped())
 		p.jump();
+	else if (data.keyBoard.space.isReleased())
+		p.stopJump();
 
 	if (data.keyBoard.w.isHeld() || data.keyBoard.w.isTapped())
 		p.move(0, -1, data.keyBoard.w.isTapped());
@@ -99,9 +101,9 @@ void EditorState::handleInput()
 	// toggle state
 	if (data.keyBoard.e.isTapped())	
 	{
-		data.eventHandler.addEvent(new StateEvent(data, STATES::EDITOR, STATE_EVENT_TYPE::REMOVE));
-		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME, STATE_EVENT_TYPE::ADD, LEVEL::TEST));
-		data.eventHandler.addEvent(new StateEvent(data, STATES::GAME, STATE_EVENT_TYPE::CHANGE));
+		data.eventHandler.addEvent(std::make_unique<StateEvent>(data, STATES::EDITOR, STATE_EVENT_TYPE::REMOVE));
+		data.eventHandler.addEvent(std::make_unique<StateEvent>(data, STATES::GAME, STATE_EVENT_TYPE::ADD, LEVEL::CHAMBER));
+		data.eventHandler.addEvent(std::make_unique<StateEvent>(data, STATES::GAME, STATE_EVENT_TYPE::CHANGE));
 	}
 }
 

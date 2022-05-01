@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Key.h"
+#include "Button.h"
 
 class KeyBoard
 {
@@ -10,7 +10,7 @@ private:
 	sf::RenderWindow& window;
 
 public:
-	Key w, a, s, d, e, shift, space, up, down, left, right;
+	Button w, a, s, d, e, shift, space, up, down, left, right;
 
 public:
 	KeyBoard(sf::RenderWindow& w)

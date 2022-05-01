@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <memory>
 
 #include "../states/State.h"
 
@@ -9,9 +10,9 @@ enum class STATES;
 class StateMachine
 {
 private:
-	std::unordered_map<STATES, State*> states;
+	std::unordered_map<STATES, std::shared_ptr<State>> states;
 
-	State* tempState;
+	std::shared_ptr<State> tempState;
 
 	STATES currentStateID;
 
@@ -29,15 +30,13 @@ private:
 	void processAdding();
 
 public:
-	~StateMachine();
-
 	void processStateChange();
 
-	State* currentState();
+	std::shared_ptr<State> currentState();
 
 private:
 	void changeState(const STATES s);
-	void addState(const STATES s, State* ts);
+	void addState(const STATES s, std::shared_ptr<State> ts);
 	void removeState(const STATES s);
 
 	friend class StateEvent;	// you have to do these through my StateEvent wrapper

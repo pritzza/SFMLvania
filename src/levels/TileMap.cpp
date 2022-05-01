@@ -13,11 +13,6 @@
 
 #include <iostream>
 
-TileMap::~TileMap()
-{
-	delete[] tiles;
-}
-
 void TileMap::load(const std::string& fileName, ResourceManager<TEXTURES, sf::Texture>& tm)
 {
 	std::ifstream file(fileName);
@@ -30,7 +25,7 @@ void TileMap::load(const std::string& fileName, ResourceManager<TEXTURES, sf::Te
 		std::getline(file, line);
 		this->height = std::stoi(line);
 
-		this->tiles = new Tile[width * height];
+		this->tiles = std::unique_ptr<Tile[]>(new Tile[width * height]);
 
 		LevelParser parser;
 

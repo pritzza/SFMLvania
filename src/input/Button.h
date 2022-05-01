@@ -1,30 +1,27 @@
 #pragma once
 
-enum class KEY_TYPE
+enum class BUTTON_STATE
 {
-	PRESS,
-	HOLD,
-	BOTH
+	TAPPED,
+	HELD,
+	RELEASED,
+	SLEEP
 };
 
-struct Button
+class Button
 {
 private:
-	const KEY_TYPE type;
+	BUTTON_STATE state{ BUTTON_STATE::SLEEP };
+
+private:
+	void update(const bool down);
 
 public:
-	bool held{};
+	const bool isTapped() const;
+	const bool isHeld() const;
+	const bool isReleased() const;
+	const bool isSleep() const;
 
-	unsigned int heldDuration{};	// how long has been held
-	const unsigned int heldThreshold{};	// how many frames until considered held
-
-	bool clicked{};
-
-public:
-	Button(const unsigned int h, const KEY_TYPE t)
-		:
-		heldThreshold{ h },
-		type{ t }
-	{}
-
+	friend class KeyBoard;	// lets Buttonboard access key.update()
+	friend class Mouse;
 };

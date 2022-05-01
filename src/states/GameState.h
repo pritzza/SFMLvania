@@ -4,7 +4,7 @@
 
 #include "../levels/Level.h"
 
-#include "../player/Player.h"
+#include "../entities/Player.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -19,7 +19,7 @@ private:
 
 public:
 	GameState(GameData& data, const std::string& levelFileName);
-	~GameState() override;
+	virtual ~GameState() override;
 
 	void virtual init();
 

@@ -2,21 +2,12 @@
 
 #include "../events/StateEvent.h"
 
-StateMachine::~StateMachine()
-{
-	for (auto it = states.begin(); it != states.end(); ++it)
-		delete it->second;
-}
-
 void StateMachine::processRemoving()
 {
 	if (isRemoving)
 	{
 		if (states.find(removingState) != states.end())	// if removingState is loaded
-		{
-			delete states.at(removingState);
 			states.erase(removingState);
-		}
 
 		isRemoving = false;
 		removingState = STATES::VOID;
@@ -56,7 +47,7 @@ void StateMachine::processStateChange()
 	processChanging();
 }
 
-State* StateMachine::currentState()
+std::shared_ptr<State> StateMachine::currentState()
 {
 	if (states.at(currentStateID) != nullptr)
 		return states.at(currentStateID);
@@ -70,7 +61,7 @@ void StateMachine::changeState(const STATES s)
 	changingState = s;
 }
 
-void StateMachine::addState(const STATES s, State* ts)
+void StateMachine::addState(const STATES s, std::shared_ptr<State> ts)
 {
 	isAdding = true;
 	tempState = ts;

@@ -8,7 +8,7 @@ private:
 
 public:
 	MenuState(GameData& data);
-	~MenuState() override;
+	virtual ~MenuState() override;
 
 	void virtual init();
 

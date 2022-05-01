@@ -5,7 +5,7 @@
 #include "../levels/Level.h"
 #include "../levels/LevelEditor.h"
 
-#include "../player/Player.h"
+#include "../entities/Player.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -26,7 +26,7 @@ private:
 
 public:
 	EditorState(GameData& data, const std::string& levelFileName);
-	~EditorState() override;
+	virtual ~EditorState() override;
 
 	void virtual init();
 

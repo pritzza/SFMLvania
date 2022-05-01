@@ -13,6 +13,7 @@ enum class LEVEL
 {
 	VOID,	// NA or null
 	TEST,	// not really a level, just a demo map that im using for now to mess around in
+	CHAMBER,
 };
 
 enum class STATES;

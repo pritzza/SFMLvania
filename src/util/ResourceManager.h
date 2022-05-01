@@ -1,6 +1,9 @@
 #pragma once
 
 #include <unordered_map>
+#include <memory>
+
+#include <iostream>
 
 enum class TEXTURES
 {
@@ -23,22 +26,20 @@ template <class Key, class Resource>
 class ResourceManager
 {
 private:
-	std::unordered_map<Key, Resource*> resources;
+	std::unordered_map<Key, std::shared_ptr<Resource>> resources;
 
 private:
 	Key addFromFile(const std::string& fileName, const Key resourceID)
 	{
 		if (resources.find(resourceID) == resources.end())    // if resource is not already loaded
 		{
-			Resource* r = new Resource;
-
+			std::shared_ptr<Resource> r = std::make_shared<Resource>();
+			
 			if (r->loadFromFile(fileName))
 			{
 				resources.insert({ resourceID, r });
 				return resourceID;    // successfully adds resource to resources under resourceID
 			}
-			else
-				delete r;	// no memory leaks around here ;)
 
 			return Key::DEFAULT;    // didnt load sucessfully
 		}
@@ -79,7 +80,7 @@ public:
 		}
 	}
 
-	Resource* load(const Key res)
+	std::shared_ptr<Resource> load(const Key res)
 	{
 		if (resources.find(res) != resources.end())	// cant load a resource that isnt there
 			return resources.at(res);
@@ -90,18 +91,12 @@ public:
 	void remove(const Key res)
 	{
 		if (resources.size() && resources.find(res) != resources.end())	// cant delete a resource that isnt there, resources cant be empty either
-		{
-			delete resources.at(res);
 			resources.erase(res);
-		}
 	}
 
 	void clearAll()
 	{
 		for (auto it = resources.begin(); it != resources.end(); )
-		{
-			delete it->second;
 			it = resources.erase(it);	// increments iterator
-		}
 	}
 };

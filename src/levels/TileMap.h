@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include <SFML/Graphics.hpp>
 
@@ -17,18 +18,15 @@ class TileMap
 private:
 	unsigned int width;
 	unsigned int height;
-	Tile* tiles;
+	std::unique_ptr<Tile[]> tiles;
 
 public:
-	~TileMap();
-
 	void load(const std::string& fileName, ResourceManager<TEXTURES, sf::Texture>& tm);
 
 	void save(const std::string& fileName);
 
 	Tile& getTile(const unsigned int index);
 	Tile& getTile(const int x, const int y);	// returns tile at exact pixel
-
 
 	const unsigned int getWidth() const;
 	const unsigned int getHeight() const;
